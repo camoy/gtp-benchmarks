@@ -19,7 +19,7 @@
   [array-shape (-> Array Indexes)]
   [unsafe-array-proc (-> Array (-> Indexes Float))]
   [array-size (-> Array Integer)]
-  [array-strictness (Parameterof (U #f #t))])
+  [array-strictness (Boxof (U #f #t))])
 
 ;; --- from array-sequence.rkt
 
@@ -56,7 +56,7 @@
 ;; -- synth
 
 ;; TODO this slows down a bit, it seems, but improves memory use
-(array-strictness #f)
+(set-box! array-strictness #f)
 
 (: fs Natural)
 (define fs 44100)
@@ -116,4 +116,3 @@
 (: emit (-> Array (Vectorof Integer)))
 (define (emit signal)
   (signal->integer-sequence signal #:gain 0.3))
-

@@ -22,8 +22,8 @@
          array-broadcast
          array-shape-broadcast)
 
-(: array-broadcasting (Parameterof (U #f #t 'permissive)))
-(define array-broadcasting (make-parameter #t))
+(: array-broadcasting (Boxof (U #f #t 'permissive)))
+(define array-broadcasting (box #t))
 
 (: shift-stretch-axes (-> Array Indexes Array))
 (define (shift-stretch-axes arr new-ds)
@@ -66,32 +66,36 @@
 (: shape-permissive-broadcast (Indexes Indexes Integer (-> Nothing) -> Indexes))
 (define (shape-permissive-broadcast ds1 ds2 dims fail)
   (define: new-ds : Indexes (make-vector dims 0))
-  (let loop ([#{k : Integer} 0])
-    (cond [(k . < . dims)
-           (define dk1 (vector-ref ds1 k))
-           (define dk2 (vector-ref ds2 k))
-           (vector-set!
-            new-ds k
-            (cond [(or (= dk1 0) (= dk2 0))  (fail)]
-                  [else  (fxmax dk1 dk2)]))
-           (loop (+ k 1))]
-          [else  new-ds])))
+  (define: loop : (Integer -> Indexes)
+    (lambda (k)
+      (cond [(k . < . dims)
+             (define dk1 (vector-ref ds1 k))
+             (define dk2 (vector-ref ds2 k))
+             (vector-set!
+              new-ds k
+              (cond [(or (= dk1 0) (= dk2 0))  (fail)]
+                    [else  (fxmax dk1 dk2)]))
+             (loop (+ k 1))]
+            [else  new-ds])))
+  (loop 0))
 
 (: shape-normal-broadcast (Indexes Indexes Integer (-> Nothing) -> Indexes))
 (define (shape-normal-broadcast ds1 ds2 dims fail)
   (define: new-ds : Indexes (make-vector dims 0))
-  (let loop ([#{k : Integer} 0])
-    (cond [(k . < . dims)
-           (define dk1 (vector-ref ds1 k))
-           (define dk2 (vector-ref ds2 k))
-           (vector-set!
-            new-ds k
-            (cond [(= dk1 dk2)  dk1]
-                  [(and (= dk1 1) (dk2 . > . 0))  dk2]
-                  [(and (= dk2 1) (dk1 . > . 0))  dk1]
-                  [else  (fail)]))
-           (loop (+ k 1))]
-          [else  new-ds])))
+  (define: loop : (Integer -> Indexes)
+    (lambda (k)
+      (cond [(k . < . dims)
+             (define dk1 (vector-ref ds1 k))
+             (define dk2 (vector-ref ds2 k))
+             (vector-set!
+              new-ds k
+              (cond [(= dk1 dk2)  dk1]
+                    [(and (= dk1 1) (dk2 . > . 0))  dk2]
+                    [(and (= dk2 1) (dk1 . > . 0))  dk1]
+                    [else  (fail)]))
+             (loop (+ k 1))]
+            [else  new-ds])))
+  (loop 0))
 
 (: shape-broadcast2 (Indexes Indexes (-> Nothing) (U #f #t 'permissive) -> Indexes))
 (define (shape-broadcast2 ds1 ds2 fail broadcasting)
@@ -109,9 +113,9 @@
                (shape-permissive-broadcast ds1 ds2 dims fail)
                (shape-normal-broadcast ds1 ds2 dims fail)))]))
 
-(: array-shape-broadcast (case-> ((Listof Indexes) -> Indexes)
-                                 ((Listof Indexes) (U #f #t 'permissive) -> Indexes)))
-(define (array-shape-broadcast dss [broadcasting (array-broadcasting)])
+(: array-shape-broadcast ((Listof Indexes) -> Indexes))
+(define (array-shape-broadcast dss)
+  (define broadcasting (unbox array-broadcasting))
   (define (fail) (error 'array-shape-broadcast
                         "incompatible array shapes (array-broadcasting ~v): ~a"
                         broadcasting

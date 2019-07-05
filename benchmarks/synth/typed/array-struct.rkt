@@ -10,18 +10,21 @@
   [check-array-shape-size (-> Symbol Indexes Integer)]
   [check-array-shape (-> (Vectorof Integer) (-> Nothing) Indexes)])
 
+(define array? Array?)
+(define array-shape Array-shape)
+(define array-size Array-size)
+(define unsafe-array-proc Array-unsafe-proc)
+
 (provide
- (rename-out (Array? array?))
- (rename-out (Array-shape array-shape))
- (rename-out (Array-size  array-size))
- (rename-out (Array-unsafe-proc unsafe-array-proc))
+ array?
+ array-shape
+ array-size
+ unsafe-array-proc
  array-default-strict!
  array-strict?
  array-strictness
  build-array
  make-array
- make-unsafe-array-proc
- make-unsafe-array-set-proc
  unsafe-build-array
  unsafe-build-simple-array
  unsafe-vector->array
@@ -167,8 +170,8 @@
 
 ;; -- array-struct
 
-(: array-strictness (Parameterof (U #f #t)))
-(define array-strictness (make-parameter #t))
+(: array-strictness (Boxof (U #f #t)))
+(define array-strictness (box #t))
 
 (define-syntax-rule (make-unsafe-array-proc ds ref)
   (λ: ([js : Indexes])
@@ -188,7 +191,7 @@
 (: array-default-strict! (Array -> Void))
 (define (array-default-strict! arr)
   (define strict? (Array-strict? arr))
-  (when (and (not (unbox strict?)) (array-strictness))
+  (when (and (not (unbox strict?)) (unbox array-strictness))
     ((Array-strict! arr))
     (set-box! strict? #t)))
 

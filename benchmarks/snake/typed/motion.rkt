@@ -15,8 +15,7 @@
 (provide reset!)
 (define r (make-pseudo-random-generator)) 
 (define (reset!)
-  (parameterize ((current-pseudo-random-generator r))
-    (random-seed 1324)))
+  (void))
 
 (: world->world : (World . -> . World))
 (define (world->world w)

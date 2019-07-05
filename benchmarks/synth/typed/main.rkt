@@ -11,7 +11,7 @@
   [drum (-> Natural Pattern Natural Array)])
 
 (require/typed/check "mixer.rkt"
-  [mix (-> Weighted-Signal * Array)])
+  [mix (-> (Listof Weighted-Signal) Array)])
 
 (require/typed/check "synth.rkt"
   [emit (-> Array (Vectorof Integer))]
@@ -28,7 +28,7 @@
 (define-syntax (mix/sugar stx)
   (syntax-parse stx
     [(_ sig:mixand ...)
-     #'(mix (list sig.signal sig.weight) ...)]))
+     #'(mix (list (list sig.signal sig.weight) ...))]))
 
 (define LOOPS 6)
 

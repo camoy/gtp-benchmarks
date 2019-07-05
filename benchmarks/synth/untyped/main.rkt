@@ -102,7 +102,7 @@
     (drum 1 '(O #f X #f O #f X #f O #f X #f O O X X) 360))))
 
 (define (main)
-  (large-test)
+  (small-test)
   (void))
 
 (time (main))

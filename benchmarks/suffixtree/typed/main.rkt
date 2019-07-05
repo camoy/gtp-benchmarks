@@ -19,4 +19,4 @@
       (longest-common-substring a b)))
   (void))
 
-(main LARGE_TEST)
+(main SMALL_TEST)

@@ -117,9 +117,7 @@
 
 (: main (-> Void))
 (define (main)
-  ;; (mid-test) ;; 37ms
-  (large-test) ;; 110ms
-  ;; (small-test) ;; 3ms
+  (small-test) ;; 3ms
   (void))
 
 (time (main))

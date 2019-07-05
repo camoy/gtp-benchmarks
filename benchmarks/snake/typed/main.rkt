@@ -32,7 +32,7 @@
   (void))
 
 (define DATA (with-input-from-file "../base/snake-hist.rktd" read))
-(define LOOPS 200)
+(define LOOPS 1)
 
 (: main (-> Any Void))
 (define (main hist)

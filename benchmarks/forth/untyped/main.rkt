@@ -7,7 +7,7 @@
 
 ;; =============================================================================
 
-(define LOOPS 10)
+(define LOOPS 1)
 
 (define (main lines)
   (for ((i (in-range LOOPS)))

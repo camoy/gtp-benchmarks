@@ -23,7 +23,7 @@
 ;; stream of prime numbers
 (define primes (sieve (count-from 2)))
 
-(define N-1 6666)
+(define N-1 6)
 
 (define (main)
   (void (stream-get primes N-1)))

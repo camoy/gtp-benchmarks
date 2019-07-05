@@ -31,7 +31,7 @@
   (void))
 
 (define DATA (with-input-from-file "../base/tetris-hist.rktd" read))
-(define LOOPS 2)
+(define LOOPS 1)
 
 (: main (-> Any Void))
 (define (main raw)

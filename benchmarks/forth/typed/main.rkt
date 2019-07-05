@@ -10,7 +10,7 @@
 
 ;; =============================================================================
 
-(define LOOPS 10)
+(define LOOPS 1)
 
 (: main (-> (Listof String) Void))
 (define (main lines)

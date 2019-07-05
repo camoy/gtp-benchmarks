@@ -37,7 +37,7 @@
 (define (main hist)
   (cond
    [(list? hist)
-    (for ((i (in-range 100)))
+    (for ((i (in-range 1)))
       (replay w0 hist))]
    [else
     (error "bad input")]))

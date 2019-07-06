@@ -19,7 +19,7 @@
 (define label-element-equal? equal?)
 
 (provide
-        (rename-out [ext:make-label make-label])
+        (rename-out [ext:label label])
         label-element?
         label-element-equal?
         string->label
@@ -43,14 +43,14 @@
         label-source-eq?)
 
 
-;;make-label: label-element -> label
+;;label: label-element -> label
 ;;Constructs a new label from either a string or a vector of things.
-(: ext:make-label (-> (U String (Vectorof (U Char Symbol))) Label))
-(define (ext:make-label label-element)
+(: ext:label (-> (U String (Vectorof (U Char Symbol))) Label))
+(define (ext:label label-element)
  (cond ((string? label-element) (string->label label-element))
        ((vector? label-element) (vector->label label-element))
        (else
-        (error 'make-label "Don't know how to make label from ~S" label-element))))
+        (error 'label "Don't know how to make label from ~S" label-element))))
 
 (: make-sentinel (-> Symbol))
 (define (make-sentinel)
@@ -64,7 +64,7 @@
 ;; Constructs a new label from the input vector.
 (: vector->label (-> (Vectorof (U Char Symbol)) label))
 (define (vector->label vector)
-  (make-label (vector->immutable-vector vector)
+  (label (vector->immutable-vector vector)
               0 (vector-length vector)))
 
 
@@ -123,14 +123,14 @@
                     (-> label Index Index label)))
 (define sublabel
   (case-lambda
-    ((label i)
-     (sublabel label i (label-length label)))
-    ((label i j)
+    ((l i)
+     (sublabel l i (label-length l)))
+    ((l i j)
      (unless (<= i j)
        (error 'sublabel "illegal sublabel [~a, ~a]" i j))
-     (make-label (label-datum label)
-                 (+ i (label-i label))
-                 (+ j (label-i label))))))
+     (label (label-datum l)
+                 (+ i (label-i l))
+                 (+ j (label-i l))))))
 
 ;; sublabel!: label number number -> void
 ;; destructively sets the input label to sublabel.
@@ -227,8 +227,8 @@
 ;; label-copy: label->label
 ;; Returns a copy of the label.
 (: label-copy (-> label label))
-(define (label-copy label)
-  (make-label (label-datum label) (label-i label) (label-j label)))
+(define (label-copy l)
+  (label (label-datum l) (label-i l) (label-j l)))
 
 
 ;; label-ref-at-end?: label number -> boolean

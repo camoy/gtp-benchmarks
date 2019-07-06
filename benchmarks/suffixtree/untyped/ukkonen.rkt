@@ -5,10 +5,10 @@
 ;; biology.
 
 (require "structs.rkt"
-  (except-in "data.rkt" make-label)
+  (except-in "data.rkt" label)
   "label.rkt")
 
-(define dummy-node (node (make-label "dummy") #f '() #f))
+(define dummy-node (node (label "dummy") #f '() #f))
 
 
 (provide skip-count)

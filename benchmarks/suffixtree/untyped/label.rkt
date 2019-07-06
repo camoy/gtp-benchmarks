@@ -24,7 +24,7 @@
 
 
 (provide
-         (rename-out [ext:make-label make-label])
+         (rename-out [ext:label label])
          label-element?
          label-element-equal?
          string->label
@@ -47,13 +47,13 @@
          label-same-source?)
 
 
-;; make-label: label-element -> label
+;; label: label-element -> label
 ;; Constructs a new label from either a string or a vector of things.
-(define (ext:make-label label-element)
+(define (ext:label label-element)
   (cond ((string? label-element) (string->label label-element))
         ((vector? label-element) (vector->label label-element))
         (else
-         (error 'make-label "Don't know how to make label from ~S" label-element))))
+         (error 'label "Don't know how to make label from ~S" label-element))))
 
 
 (define (make-sentinel)
@@ -65,7 +65,7 @@
 ;; vector->label vector
 ;; Constructs a new label from the input vector.
 (define (vector->label vector)
-  (make-label (vector->immutable-vector vector)
+  (label (vector->immutable-vector vector)
               0 (vector-length vector)))
 
 
@@ -117,14 +117,14 @@
 ;; Gets a slice of the label on the half-open interval [i, j)
 (define sublabel
   (case-lambda
-    ((label i)
-     (sublabel label i (label-length label)))
-    ((label i j)
+    ((l i)
+     (sublabel l i (label-length l)))
+    ((l i j)
      (unless (<= i j)
        (error 'sublabel "illegal sublabel [~a, ~a]" i j))
-     (make-label (label-datum label)
-                 (+ i (label-i label))
-                 (+ j (label-i label))))))
+     (label (label-datum l)
+                 (+ i (label-i l))
+                 (+ j (label-i l))))))
 
 
 ;; sublabel!: label number number -> void
@@ -201,8 +201,8 @@
 
 ;; label-copy: label->label
 ;; Returns a copy of the label.
-(define (label-copy label)
-  (make-label (label-datum label) (label-i label) (label-j label)))
+(define (label-copy l)
+  (label (label-datum l) (label-i l) (label-j l)))
 
 
 ;; label-ref-at-end?: label number -> boolean

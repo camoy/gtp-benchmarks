@@ -62,7 +62,7 @@
 
 ;; vector->label vector
 ;; Constructs a new label from the input vector.
-(: vector->label (-> (Vectorof (U Char Symbol)) label))
+(: vector->label (-> (Vectorof (U Char Symbol)) Label))
 (define (vector->label vector)
   (label (vector->immutable-vector vector)
               0 (vector-length vector)))
@@ -71,7 +71,7 @@
 ;; vector->label vector
 ;; Constructs a new label from the input vector, with a sentinel
 ;; symbol at the end.
-(: vector->label/with-sentinel (-> (Vectorof Char) label))
+(: vector->label/with-sentinel (-> (Vectorof Char) Label))
 (define (vector->label/with-sentinel vector)
   (: N Index)
   (define N (vector-length vector))
@@ -86,7 +86,7 @@
 
 ;;string->label: string -> label
 ;;Constructs a new label from the input string.
-(: string->label (-> String label))
+(: string->label (-> String Label))
 (define (string->label str)
   (vector->label (list->vector (string->list str))))
 
@@ -97,13 +97,13 @@
 ;;
 ;; Note: this label can not be converted in whole back to a string:
 ;; the sentinel character interferes with string concatenation
-(: string->label/with-sentinel (-> String label))
+(: string->label/with-sentinel (-> String Label))
 (define (string->label/with-sentinel str)
   (vector->label/with-sentinel (list->vector (string->list str))))
 
 ;; label-length: label -> number?
 ;; Returns the length of the label.
-(: label-length (-> label Index))
+(: label-length (-> Label Index))
 (define (label-length label)
   (define len (- (label-j label) (label-i label)))
   (unless (index? len) (error "label-length"))
@@ -112,15 +112,15 @@
 
 ; label-ref: label number? -> char
 ; Returns the kth element in the label.
-(: label-ref (-> label Integer (U Symbol Char)))
+(: label-ref (-> Label Integer (U Symbol Char)))
 (define (label-ref label k)
   (unless (index? k) (error "label ref INDEX"))
   (vector-ref (label-datum label) (+ k (label-i label))))
 
 ;; sublabel: label number number -> label
 ;; Gets a slice of the label on the half-open interval [i, j)
-(: sublabel (case-> (-> label Index label)
-                    (-> label Index Index label)))
+(: sublabel (case-> (-> Label Index Label)
+                    (-> Label Index Index Label)))
 (define sublabel
   (case-lambda
     ((l i)
@@ -134,8 +134,8 @@
 
 ;; sublabel!: label number number -> void
 ;; destructively sets the input label to sublabel.
-(: sublabel! (case-> (-> label Index Void)
-                     (-> label Index Index Void)))
+(: sublabel! (case-> (-> Label Index Void)
+                     (-> Label Index Index Void)))
 (define sublabel!
   (case-lambda
     ((label i)
@@ -150,7 +150,7 @@
 
 ;; label-prefix?: label label -> boolean
 ;; Returns true if the first label is a prefix of the second label
-(: label-prefix? (-> label label Boolean))
+(: label-prefix? (-> Label Label Boolean))
 (define (label-prefix? prefix other-label)
   (let ((m (label-length prefix))
         (n (label-length other-label)))
@@ -167,7 +167,7 @@
 
 ;; label-equal?: label label -> boolean
 ;; Returns true if the two labels are equal.
-(: label-equal? (-> label label Boolean))
+(: label-equal? (-> Label Label Boolean))
 (define (label-equal? l1 l2)
   (and (= (label-length l1) (label-length l2))
        (label-prefix? l1 l2)))
@@ -175,7 +175,7 @@
 
 ;; label-empty?: label -> boolean
 ;; Returns true if the label is considered empty
-(: label-empty? (-> label Boolean))
+(: label-empty? (-> Label Boolean))
 (define (label-empty? label)
   (>= (label-i label) (label-j label)))
 
@@ -184,7 +184,7 @@
 ;; Extracts the string that the label represents.
 ;; Precondition: the label must have originally come from a string.
 ;; Note: this operation is expensive: don't use it except for debugging.
-(: label->string (-> label String))
+(: label->string (-> Label String))
 (define (label->string label)
   (: V (Vectorof (U Char Symbol)))
   (define V (label->vector label))
@@ -195,7 +195,7 @@
               c))
   (list->string L))
 
-(: label->string/removing-sentinel (-> label String))
+(: label->string/removing-sentinel (-> Label String))
 (define (label->string/removing-sentinel label)
   (let* ([ln (label-length label)]
          [N (if (and (> ln 0) (sentinel? (label-ref label (sub1 ln))))
@@ -210,7 +210,7 @@
 ;; label->vector: label -> vector
 ;; Extracts the vector that the label represents.
 ;; Note: this operation is expensive: don't use it except for debugging.
-(: label->vector (-> label (Vectorof (U Char Symbol))))
+(: label->vector (-> Label (Vectorof (U Char Symbol))))
 (define (label->vector label)
   (: N Integer)
   (define N (label-length label))
@@ -226,24 +226,24 @@
 
 ;; label-copy: label->label
 ;; Returns a copy of the label.
-(: label-copy (-> label label))
+(: label-copy (-> Label Label))
 (define (label-copy l)
   (label (label-datum l) (label-i l) (label-j l)))
 
 
 ;; label-ref-at-end?: label number -> boolean
-(: label-ref-at-end? (-> label Integer Boolean))
+(: label-ref-at-end? (-> Label Integer Boolean))
 (define (label-ref-at-end? label offset)
   (= offset (label-length label)))
 
 
 ;; label-source-id: label -> number
-(: label-source-id (-> label Integer))
+(: label-source-id (-> Label Integer))
 (define (label-source-id label)
   (eq-hash-code (label-datum label)))
 
 ;; label-same-source?: label label -> boolean
-(: label-same-source? (-> label label Boolean))
+(: label-same-source? (-> Label Label Boolean))
 (define (label-same-source? label-1 label-2)
   (eq? (label-datum label-1) (label-datum label-2)))
 

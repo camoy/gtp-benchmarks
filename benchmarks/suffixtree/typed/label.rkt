@@ -1,6 +1,7 @@
 #lang typed/racket/base
 
-(require "typed-data.rkt")
+(require "typed-data.rkt"
+         (rename-in "typed-data.rkt" [label -label]))
 
 ;; Label implementation.  Labels are like strings, but also allow for
 ;; efficient shared slicing.
@@ -19,7 +20,7 @@
 (define label-element-equal? equal?)
 
 (provide
-        (rename-out [ext:label label])
+        label
         label-element?
         label-element-equal?
         string->label
@@ -45,8 +46,8 @@
 
 ;;label: label-element -> label
 ;;Constructs a new label from either a string or a vector of things.
-(: ext:label (-> (U String (Vectorof (U Char Symbol))) Label))
-(define (ext:label label-element)
+(: label (-> (U String (Vectorof (U Char Symbol))) Label))
+(define (label label-element)
  (cond ((string? label-element) (string->label label-element))
        ((vector? label-element) (vector->label label-element))
        (else
@@ -64,8 +65,8 @@
 ;; Constructs a new label from the input vector.
 (: vector->label (-> (Vectorof (U Char Symbol)) Label))
 (define (vector->label vector)
-  (label (vector->immutable-vector vector)
-              0 (vector-length vector)))
+  (-label (vector->immutable-vector vector)
+               0 (vector-length vector)))
 
 
 ;; vector->label vector
@@ -128,9 +129,9 @@
     ((l i j)
      (unless (<= i j)
        (error 'sublabel "illegal sublabel [~a, ~a]" i j))
-     (label (label-datum l)
-                 (+ i (label-i l))
-                 (+ j (label-i l))))))
+     (-label (label-datum l)
+                  (+ i (label-i l))
+                  (+ j (label-i l))))))
 
 ;; sublabel!: label number number -> void
 ;; destructively sets the input label to sublabel.
@@ -228,7 +229,7 @@
 ;; Returns a copy of the label.
 (: label-copy (-> Label Label))
 (define (label-copy l)
-  (label (label-datum l) (label-i l) (label-j l)))
+  (-label (label-datum l) (label-i l) (label-j l)))
 
 
 ;; label-ref-at-end?: label number -> boolean

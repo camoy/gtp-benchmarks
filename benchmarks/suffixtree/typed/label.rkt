@@ -191,7 +191,7 @@
   (define V (label->vector label))
   (: L (Listof Char))
   (define L (for/list : (Listof Char)
-                      ([c : (U Char Symbol) (in-vector V)])
+                      ([c : (U Char Symbol) (in-list (vector->list V))])
               (unless (char? c) (error "label->string invariant broken"))
               c))
   (list->string L))

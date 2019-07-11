@@ -13,10 +13,8 @@
                      [snake-grow    (Snake . -> . Snake)])
 
 (provide reset!)
-(define r (make-pseudo-random-generator)) 
 (define (reset!)
-  (parameterize ((current-pseudo-random-generator r))
-    (random-seed 1324)))
+  (random-seed 1324))
 
 (: world->world : (World . -> . World))
 (define (world->world w)
@@ -46,8 +44,8 @@
 ;; Eat the food and generate a new one.
 (: snake-eat : (World . -> . World))
 (define (snake-eat w)
-  (define i (add1 (random (sub1 BOARD-WIDTH) r)))
-  (define j (add1 (random (sub1 BOARD-HEIGHT) r)))
+  (define i (add1 (random (sub1 BOARD-WIDTH))))
+  (define j (add1 (random (sub1 BOARD-HEIGHT))))
   (world (snake-grow (world-snake w))
          (posn i j)))
 (provide

@@ -5,7 +5,7 @@
 ;; biology.
 
 (require
- (except-in "typed-data.rkt" make-label)
+ (except-in "typed-data.rkt" label)
  require-typed-check
 )
 (require/typed/check "label.rkt"
@@ -17,7 +17,7 @@
   [label-element-equal? (-> Any Any Boolean)]
   [label-source-eq? (-> Label Label Boolean)]
   [vector->label (-> (Vectorof (U Char Symbol)) Label)]
-  [make-label (-> (U String (Vectorof (U Char Symbol))) Label)]
+  [label (-> (U String (Vectorof (U Char Symbol))) Label)]
   [sublabel (case-> (-> Label Index Label)
                     (-> Label Index Index Label))])
 
@@ -37,7 +37,7 @@
                      (Pairof Node Index))]
   )
 
-(define dummy-node (node (make-label "dummy") #f '() #f))
+(define dummy-node (node (label "dummy") #f '() #f))
 
 
 ;; skip-count: node label -> (values node number)

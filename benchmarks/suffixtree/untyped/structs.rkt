@@ -3,7 +3,7 @@
          racket/list)
 
 (require "label.rkt"
-  (except-in "data.rkt" make-label))
+  (except-in "data.rkt" label))
 
 (provide
  tree?
@@ -21,10 +21,10 @@
 ;; new-suffix-tree: void -> suffix-tree
 ;; Builds a new empty suffix-tree.
 (define (new-suffix-tree)
-  (make-suffix-tree
+  (suffix-tree
    ;; The root node has no label, no parent, an empty list of
    ;; children.  Its suffix link is invalid, but we set it to #f.
-   (let ((root (make-node (make-label (make-vector 0)) #f (list) #f)))
+   (let ((root (node (label (make-vector 0)) #f (list) #f)))
      root)))
 
 
@@ -34,9 +34,9 @@
 
 ;; node-add-leaf!: node label -> node
 ;; Attaches a new leaf node to an internal node.  Returns thew new leaf.
-(define (node-add-leaf! node label)
-  (let ((leaf (make-node label node (list) #f)))
-    (node-add-child! node leaf)
+(define (node-add-leaf! n l)
+  (let ((leaf (node l n (list) #f)))
+    (node-add-child! n leaf)
     leaf))
 
 
@@ -79,15 +79,15 @@
 
 ;; node-up-split!: node number -> node
 ;; Introduces a new node that goes between this node and its parent.
-(define (node-up-split! node offset)
-  (let* ((label (node-up-label node))
-         (pre-label (sublabel label 0 offset))
-         (post-label (sublabel label offset))
-         (parent (node-parent node))
-         (new-node (make-node pre-label parent (children-list node) #f)))
-    (set-node-up-label! node post-label)
-    (node-remove-child! parent node)
-    (set-node-parent! node new-node)
+(define (node-up-split! n offset)
+  (let* ((l (node-up-label n))
+         (pre-label (sublabel l 0 offset))
+         (post-label (sublabel l offset))
+         (parent (node-parent n))
+         (new-node (node pre-label parent (children-list n) #f)))
+    (set-node-up-label! n post-label)
+    (node-remove-child! parent n)
+    (set-node-parent! n new-node)
     (node-add-child! parent new-node)
     new-node))
 

@@ -2,7 +2,7 @@
 ;; Some utilities.
 
 (require
- (except-in "data.rkt" make-label)
+ (except-in "data.rkt" label)
  "label.rkt"
  "structs.rkt"
  "ukkonen.rkt")
@@ -32,7 +32,7 @@
 (define (longest-common-sublabel label-1 label-2)
   (let ((label-1-marks (make-hasheq))
         (label-2-marks (make-hasheq))
-        (deepest-node (node (make-label "no lcs") #f '() #f))
+        (deepest-node (node (label "no lcs") #f '() #f))
         (deepest-depth 0))
     (letrec
         [

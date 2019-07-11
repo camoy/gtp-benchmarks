@@ -2,14 +2,14 @@
 ;; Some utilities.
 
 (require require-typed-check
-         (except-in "typed-data.rkt" make-label)
+         (except-in "typed-data.rkt" label)
          racket/list)
 
 (require/typed/check "label.rkt"
  [label->string (-> Label String)]
  [string->label (-> String Label)]
  [string->label/with-sentinel (-> String Label)]
- [make-label (-> (U String (Vectorof (U Char Symbol))) Label)]
+ [label (-> (U String (Vectorof (U Char Symbol))) Label)]
  [label-source-eq? (-> Label Label Boolean)]
  [label-length (-> Label Index)]
  [vector->label (-> (Vectorof (U Char Symbol)) Label)]
@@ -54,7 +54,7 @@
   (: label-2-marks (HashTable Node Boolean))
   (define label-2-marks (make-hasheq))
   (: deepest-node Node)
-  (define deepest-node (node (make-label "no lcs") #f '() #f))
+  (define deepest-node (node (label "no lcs") #f '() #f))
   (: deepest-depth Index)
   (define deepest-depth 0)
   (: main (-> Label))

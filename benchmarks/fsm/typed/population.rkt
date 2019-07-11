@@ -7,31 +7,31 @@
   population-payoffs
   match-up*
   death-birth
-  ;; == 
+  ;; ==
   ;Payoff
   ;Population
 )
  (: build-random-population
-  ;; (build-population n c) for even n, build a population of size n 
+  ;; (build-population n c) for even n, build a population of size n
   ;; with c constraint: (even? n)
   (-> Natural Population))
  (: population-payoffs (-> Population [Listof Payoff]))
  (: match-up*
   ;; (match-ups p r) matches up neighboring pairs of
-  ;; automata in population p for r rounds 
+  ;; automata in population p for r rounds
   (-> Population Natural Population))
  (: death-birth
-  ;; (death-birth p r) replaces r elements of p with r "children" of 
-  ;; randomly chosen fittest elements of p, also shuffle 
+  ;; (death-birth p r) replaces r elements of p with r "children" of
+  ;; randomly chosen fittest elements of p, also shuffle
   ;; constraint (< r (length p))
-  (-> Population Natural [#:random (U False Real)] Population))
+  (->* [Population Natural] [(U False Real)] Population))
 
 ;; =============================================================================
 (require require-typed-check
  "automata-adapted.rkt")
 (require/typed/check "utilities.rkt"
  (choose-randomly
-  (-> [Listof Probability] Natural [#:random (U False Real)] [Listof Natural]))
+  (->* [[Listof Probability] Natural] [(U False Real)] [Listof Natural]))
 )
 
 ;; Population = (Cons Automaton* Automaton*)
@@ -68,17 +68,17 @@
 (: population-reset (-> Automaton* Void))
 ;; effec: reset all automata in a*
 (define (population-reset a*)
-  (for ([x (in-vector a*)][i (in-naturals)])
+  (for ([x (in-list (vector->list a*))][i (in-naturals)])
     (vector-set! a* i (automaton-reset x))))
 
 ;; -----------------------------------------------------------------------------
 
-(define (death-birth population0 rate #:random (q #false))
+(define (death-birth population0 rate (q #false))
   (match-define (cons a* b*) population0)
   (define payoffs
-    (for/list : [Listof Payoff] ([x : Automaton (in-vector a*)])
+    (for/list : [Listof Payoff] ([x : Automaton (in-list (vector->list a*))])
       (automaton-payoff x)))
-  [define substitutes (choose-randomly payoffs rate #:random q)]
+  [define substitutes (choose-randomly payoffs rate q)]
   (for ([i (in-range rate)][p (in-list substitutes)])
     (vector-set! a* i (clone (vector-ref b* p))))
   (shuffle-vector a* b*))
@@ -91,10 +91,10 @@
 
 (define (shuffle-vector b a)
   ;; copy b into a
-  (for ([x (in-vector b)][i (in-naturals)])
+  (for ([x (in-list (vector->list b))][i (in-naturals)])
     (vector-set! a i x))
-  ;; now shuffle a 
-  (for ([x (in-vector b)] [i (in-naturals)])
+  ;; now shuffle a
+  (for ([x (in-list (vector->list b))] [i (in-naturals)])
     (define j (random (add1 i)))
     (unless (= j i) (vector-set! a i (vector-ref a j)))
     (vector-set! a j x))

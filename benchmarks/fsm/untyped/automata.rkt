@@ -34,10 +34,10 @@
 (define (make-automaton current table)
   (automaton current current 0 table))
 
-(define (transitions #:i-cooperate/it-cooperates cc
-                     #:i-cooperate/it-defects    cd
-                     #:i-defect/it-cooperates    dc
-                     #:i-defect/it-defects       dd)
+(define (transitions cc
+                     cd
+                     dc
+                     dd)
   (vector (vector cc cd)
           (vector dc dd)))
 
@@ -48,19 +48,19 @@
 ;; it doesnt care, it always stay in the state defect
 
 (define defect-transitions
-  (transitions #:i-cooperate/it-cooperates DEFECT 
-               #:i-cooperate/it-defects    DEFECT
-               #:i-defect/it-cooperates    DEFECT
-               #:i-defect/it-defects       DEFECT))
+  (transitions DEFECT
+               DEFECT
+               DEFECT
+               DEFECT))
 
 (define (defects p0)
   (automaton DEFECT DEFECT p0 defect-transitions))
 
 (define cooperates-transitions
-  (transitions #:i-cooperate/it-cooperates COOPERATE 
-               #:i-cooperate/it-defects    COOPERATE
-               #:i-defect/it-cooperates    COOPERATE
-               #:i-defect/it-defects       COOPERATE))
+  (transitions COOPERATE
+               COOPERATE
+               COOPERATE
+               COOPERATE))
 
 (define (cooperates p0)
   (automaton COOPERATE COOPERATE p0 cooperates-transitions))
@@ -70,10 +70,10 @@
 ;; if the opponent cooperates, it returns to play cooperate again
 
 (define tit-for-tat-transitions
-  (transitions #:i-cooperate/it-cooperates COOPERATE 
-               #:i-cooperate/it-defects    DEFECT
-               #:i-defect/it-cooperates    COOPERATE
-               #:i-defect/it-defects       DEFECT))
+  (transitions COOPERATE
+               DEFECT
+               COOPERATE
+               DEFECT))
 
 
 (define (tit-for-tat p0)
@@ -85,10 +85,10 @@
 ;; it doesnt forgive, and doesnt forget
 
 (define grim-transitions
-  (transitions #:i-cooperate/it-cooperates COOPERATE 
-               #:i-cooperate/it-defects    DEFECT
-               #:i-defect/it-cooperates    DEFECT
-               #:i-defect/it-defects       DEFECT))
+  (transitions COOPERATE
+               DEFECT
+               DEFECT
+               DEFECT))
 
 (define (grim-trigger p0)
   (automaton COOPERATE COOPERATE p0 grim-transitions))

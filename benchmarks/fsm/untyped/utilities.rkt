@@ -21,7 +21,7 @@
 
 ;; -----------------------------------------------------------------------------
 
-(define (choose-randomly probabilities speed #:random (q #false))
+(define (choose-randomly probabilities speed (q #false))
   (define %s (accumulated-%s probabilities))
   (for/list ([n (in-range speed)])
     [define r (or q (random))]
@@ -34,7 +34,7 @@
     (for/last ([p (in-naturals)] [% (in-list %s)] #:final (< r %)) p)))
 
 ;; [Listof Probability] -> [Listof Probability]
-;; calculate the accumulated probabilities 
+;; calculate the accumulated probabilities
 
 (define (accumulated-%s probabilities)
   (define total (sum probabilities))

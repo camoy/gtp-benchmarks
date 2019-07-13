@@ -1,7 +1,7 @@
 #lang racket/base
 
 (require
-  "data.rkt")
+  (rename-in "data.rkt" [label -label]))
 ;; Label implementation.  Labels are like strings, but also allow for
 ;; efficient shared slicing.
 ;;
@@ -24,7 +24,7 @@
 
 
 (provide
-         (rename-out [ext:label label])
+         label
          label-element?
          label-element-equal?
          string->label
@@ -49,7 +49,7 @@
 
 ;; label: label-element -> label
 ;; Constructs a new label from either a string or a vector of things.
-(define (ext:label label-element)
+(define (label label-element)
   (cond ((string? label-element) (string->label label-element))
         ((vector? label-element) (vector->label label-element))
         (else
@@ -65,7 +65,7 @@
 ;; vector->label vector
 ;; Constructs a new label from the input vector.
 (define (vector->label vector)
-  (label (vector->immutable-vector vector)
+  (-label (vector->immutable-vector vector)
               0 (vector-length vector)))
 
 
@@ -122,7 +122,7 @@
     ((l i j)
      (unless (<= i j)
        (error 'sublabel "illegal sublabel [~a, ~a]" i j))
-     (label (label-datum l)
+     (-label (label-datum l)
                  (+ i (label-i l))
                  (+ j (label-i l))))))
 
@@ -202,7 +202,7 @@
 ;; label-copy: label->label
 ;; Returns a copy of the label.
 (define (label-copy l)
-  (label (label-datum l) (label-i l) (label-j l)))
+  (-label (label-datum l) (label-i l) (label-j l)))
 
 
 ;; label-ref-at-end?: label number -> boolean

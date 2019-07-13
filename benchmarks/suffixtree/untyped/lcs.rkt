@@ -74,29 +74,29 @@
          (marked-by-label-2?
           (lambda (node)
             (hash-ref label-2-marks node false-thunk)))
-         
+
          (marked-by-both?
           (lambda (node)
             (and (marked-by-label-1? node)
                  (marked-by-label-2? node))))
-         
+
          (absorb-children-marks!
           (lambda (node depth)
-            (let/ec escape
+            ;;(let/ec escape
               (for-each (lambda (child)
                           (when (marked-by-label-1? child)
                             (mark-with-label-1! node))
                           (when (marked-by-label-2? child)
                             (mark-with-label-2! node))
-                          (when (marked-by-both? node)
+                          #;(when (marked-by-both? node)
                             (escape)))
-                        (node-children node)))
+                        (node-children node))
             (when (and (marked-by-both? node)
                        (> depth deepest-depth))
               (set! deepest-depth depth)
               (set! deepest-node node))))
          ]
-      
+
       (if (or (= 0 (label-length label-1))
               (= 0 (label-length label-2)))
           (string->label "")
@@ -136,7 +136,7 @@
                            (+ i dest-offset)
                            (label-ref src-label i))
               (loop (add1 i))))))
-       
+
        (build-new-label
         (lambda (labels total-length)
           (let ((vector (make-vector total-length)))
@@ -151,4 +151,3 @@
                           (+ i (label-length (car labels))))))))))]
     (lambda (node)
       (collect-loop node '() 0))))
-

@@ -1,9 +1,5 @@
 #lang racket
 
-(provide
-  require/typed/check
-)
-
 (require
   (for-syntax
     typed/untyped-utils
@@ -35,3 +31,7 @@
         #'(typed:require m)]
        [else 
         #'(require/typed m rt-clause ...)])]))
+
+(provide
+  require/typed/check)
+

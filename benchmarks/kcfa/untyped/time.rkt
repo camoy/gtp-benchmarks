@@ -30,15 +30,14 @@
 ;(: time-zero Time)
 (define time-zero '())
 
-;(: k (Parameterof Natural))
-(define k (make-parameter 1))
+;(: k (Boxof Natural))
+(define k (box 1))
 
 ;(: tick (-> Stx Time Time))
 (define (tick call time)
   (define label (Stx-label call))
-  (take* (cons label time) (k)))
+  (take* (cons label time) (unbox k)))
 
 ;(: alloc (-> Time (-> Var Addr)))
 (define ((alloc time) var)
   (Binding var time))
-

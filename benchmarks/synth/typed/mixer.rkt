@@ -65,8 +65,8 @@
 ;; Shorter signals are repeated to match the length of the longest.
 ;; Normalizes output to be within [-1,1].
 
-(: mix (-> Weighted-Signal * Array))
-(define (mix . ss)
+(: mix (-> (Listof Weighted-Signal) Array))
+(define (mix ss)
   (: signals (Listof Array))
   (define signals
     (for/list : (Listof Array) ([s : Weighted-Signal ss])

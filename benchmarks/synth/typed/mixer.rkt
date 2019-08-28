@@ -16,7 +16,7 @@
   [array-broadcast (-> Array Indexes Array)]
   [array-shape-broadcast (case-> ((Listof Indexes) -> Indexes)
                                  ((Listof Indexes) (U #f #t 'permissive) -> Indexes))]
-  [array-broadcasting (Parameterof (U #f #t 'permissive))])
+  [array-broadcasting (Boxof (U #f #t 'permissive))])
 
 (provide mix)
 
@@ -79,13 +79,18 @@
   (define downscale-ratio (/ 1.0 (apply + weights)))
   (: scale-signal (Float -> (Float -> Float)))
   (define ((scale-signal w) x) (* x w downscale-ratio))
-  (parameterize ([array-broadcasting 'permissive]) ; repeat short signals
+  (define old-array-broadcasting (unbox array-broadcasting))
+  (set-box! array-broadcasting 'permissive)
+  (define res
+    ; repeat short signals
     (for/fold ([res : Array (array-map (scale-signal (first weights))
-                               (first signals))])
-        ([s (in-list (rest signals))]
-         [w (in-list (rest weights))])
+                                       (first signals))])
+              ([s (in-list (rest signals))]
+               [w (in-list (rest weights))])
       (define scale (scale-signal w))
       (array-map (lambda ([acc : Float]
                           [new : Float])
                    (+ acc (scale new)))
-                 res s))))
+                 res s)))
+  (set-box! array-broadcasting old-array-broadcasting)
+  res)

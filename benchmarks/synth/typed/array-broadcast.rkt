@@ -22,8 +22,8 @@
          array-broadcast
          array-shape-broadcast)
 
-(: array-broadcasting (Parameterof (U #f #t 'permissive)))
-(define array-broadcasting (make-parameter #t))
+(: array-broadcasting (Boxof (U #f #t 'permissive)))
+(define array-broadcasting (box #t))
 
 (: shift-stretch-axes (-> Array Indexes Array))
 (define (shift-stretch-axes arr new-ds)
@@ -111,7 +111,7 @@
 
 (: array-shape-broadcast (case-> ((Listof Indexes) -> Indexes)
                                  ((Listof Indexes) (U #f #t 'permissive) -> Indexes)))
-(define (array-shape-broadcast dss [broadcasting (array-broadcasting)])
+(define (array-shape-broadcast dss [broadcasting (unbox array-broadcasting)])
   (define (fail) (error 'array-shape-broadcast
                         "incompatible array shapes (array-broadcasting ~v): ~a"
                         broadcasting

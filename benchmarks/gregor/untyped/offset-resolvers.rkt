@@ -4,7 +4,7 @@
 
 (require
   require-typed-check
-  "../base/tzinfo/main.rkt"
+  "tzinfo-adapter.rkt"
   "core-structs.rkt"
   "gregor-structs.rkt"
   racket/match)

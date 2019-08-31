@@ -17,18 +17,7 @@
                     [zone : (U String #f)])]
 )
 
-(provide
-  Date Date?
-  Date-ymd
-  Date-jdn
-  Time Time?
-  Time-hmsn
-  Time-ns
-  DateTime DateTime?
-  DateTime-date
-  DateTime-time
-  DateTime-jd
-  Moment Moment?
-  Moment-datetime/local
-  Moment-utc-offset
-  Moment-zone)
+(provide (struct-out Date)
+         (struct-out Time)
+         (struct-out DateTime)
+         (struct-out Moment))

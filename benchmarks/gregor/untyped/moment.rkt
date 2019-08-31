@@ -8,7 +8,7 @@
   "gregor-structs.rkt"
   (only-in racket/math exact-round)
 )
-(require (only-in "../base/tzinfo/main.rkt"
+(require (only-in "tzinfo-adapter.rkt"
   system-tzid ;(-> (U tz #f))]
   tzoffset tzoffset? tzoffset-utc-seconds
   local-seconds->tzoffset ;(-> String Integer (U tzoffset tzgap tzoverlap))]
@@ -73,7 +73,7 @@
 ;; =============================================================================
 
 ;(: current-timezone (Parameterof (U tz #f)))
-(define current-timezone (make-parameter (system-tzid)))
+(define current-timezone (box (system-tzid)))
 
 ;(: moment (->* (Natural) (Month
 ;                          Natural Natural Natural Natural Natural
@@ -85,8 +85,8 @@
 ;                          )
 ;                          Moment))
 (define (moment year [month 1] [day 1] [hour 0] [minute 0] [second 0] [nano 0]
-                #:tz [tz (current-timezone)]
-                #:resolve-offset [resolve resolve-offset/raise])
+                [tz (unbox current-timezone)]
+                [resolve resolve-offset/raise])
   (when (eq? tz #f) (error "no timezone"))
   (datetime+tz->moment (datetime year month day hour minute second nano) tz resolve))
 
@@ -185,4 +185,3 @@
 
 ;(: UTC String)
 (define UTC "Etc/UTC")
-

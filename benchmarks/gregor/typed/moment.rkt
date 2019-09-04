@@ -166,9 +166,9 @@
          (make-moment local z #f)]))
 
 (: timezone-coerce (->* [Moment (U Natural String)]
-                        (#:resolve-offset (-> (U tzgap tzoverlap) DateTime (U String #f) (U #f Moment) Moment))
+                        ((-> (U tzgap tzoverlap) DateTime (U String #f) (U #f Moment) Moment))
                         Moment))
-(define (timezone-coerce m z #:resolve-offset [resolve resolve-offset/raise])
+(define (timezone-coerce m z [resolve resolve-offset/raise])
   (datetime+tz->moment (moment->datetime/local m) z resolve))
 
 (: moment=? (-> Moment Moment Boolean))

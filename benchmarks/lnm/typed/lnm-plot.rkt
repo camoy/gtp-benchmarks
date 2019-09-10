@@ -10,20 +10,18 @@
 ;;   (Or, a list of such plots)
 
 (provide
-  lnm-plot
-)
+  lnm-plot)
 
 ;; -----------------------------------------------------------------------------
 
 (require
   require-typed-check
-  "pict-adapted.rkt"
   "summary-adapted.rkt"
-  plot/typed/pict
+  "plot-adapted.rkt"
   (only-in racket/math exact-floor)
   (only-in plot/typed/utils linear-seq)
-  (only-in racket/math exact-floor exact-ceiling)
-)
+  (only-in racket/math exact-floor exact-ceiling))
+
 (require/typed racket/stream
   [stream-length (-> (Sequenceof String) Index)]
   [stream->list (-> (Sequenceof String) (Listof String))]
@@ -86,29 +84,24 @@
   ;; Get yticks
   (define yticks (compute-yticks num-vars 6 #:exact (list cutoff-point)))
   ;; Set plot parameters ('globally', for all picts)
-  (parameterize (
-    [plot-x-ticks (compute-xticks 5)]
-    [plot-y-ticks (compute-yticks num-vars 6 #:exact cutoff-point)]
-    [plot-x-far-ticks no-ticks]
-    [plot-y-far-ticks no-ticks]
-    [plot-font-face "bold"]
-    [plot-font-size 16])
-    ;; Create 1 pict for each value of L
-    (for/list ([L (in-list L-list)])
-      (define F (function (count-variations summary L #:cache-up-to xmax) 0 xmax
-                          #:samples num-samples
-                          #:color 'navy
-                          #:width THICK))
-      (define res (plot-pict (list N-line M-line cutoff-line F)
-                 #:x-min 0
-                 #:x-max xmax
-                 #:y-min 0
-                 #:y-max num-vars
-                 #:x-label "Overhead (vs. untyped)"
-                 #:y-label "Count"
-                 #:width width
-                 #:height height))
-      (if (pict? res) res (error 'lnm)))))
+  (plot-x-ticks (compute-xticks 5))
+  (plot-y-ticks (compute-yticks num-vars 6 #:exact cutoff-point))
+  (plot-x-far-ticks no-ticks)
+  (plot-y-far-ticks no-ticks)
+  (plot-font-face "bold")
+  (plot-font-size 16)
+  ;; Create 1 pict for each value of L
+  (for/list ([L (in-list L-list)])
+    (define F (function (count-variations summary L #:cache-up-to xmax) 0 xmax
+                        num-samples
+                        'navy
+                        THICK))
+    (define res (plot-pict (list N-line M-line cutoff-line F)
+                           0 xmax
+                           0 num-vars
+                           "Overhead (vs. untyped)" "Count"
+                           width height))
+    (if (pict? res) res (error 'lnm))))
 
 ;; Return a function (-> Real Index) on argument `N`
 ;;  that counts the number of variations
@@ -242,9 +235,9 @@
                          #:style [s 'solid])
   (lines (list (list x-min y-val)
                (list x-max y-val))
-         #:color c
-         #:width w
-         #:style s))
+         c
+         w
+         s))
 
 (: vertical-line (->* [Real]
                       [#:y-min Index
@@ -261,6 +254,6 @@
                        #:style [s 'solid])
   (lines (list (list x-val y-min)
                (list x-val y-max))
-         #:color c
-         #:width w
-         #:style s))
+         c
+         w
+         s))

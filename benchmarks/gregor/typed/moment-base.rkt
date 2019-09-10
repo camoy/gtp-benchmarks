@@ -15,7 +15,7 @@
   require-typed-check
   racket/match
   "gregor-adapter.rkt"
-  (only-in racket/format ~r)
+  "format-adapter.rkt"
 )
 (require/typed/check "datetime.rkt"
     [datetime->iso8601 (-> DateTime String)]
@@ -44,8 +44,8 @@
      (format "~a~a~a:~a"
              (datetime->iso8601 d)
              sign
-             (~r hrs #:min-width 2 #:pad-string "0" #:sign #f)
-             (~r min #:min-width 2 #:pad-string "0" #:sign #f))]))
+             (~r** hrs 2 "0")
+             (~r** min 2 "0"))]))
 
 (: make-moment (-> DateTime Integer (U String #f) Moment))
 (define (make-moment dt off z)

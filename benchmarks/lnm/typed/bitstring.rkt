@@ -24,8 +24,8 @@
   (if (index? res) res (error 'log2)))
 
 ;; Convert a natural number to a binary string, padded to the supplied width
-(: natural->bitstring (-> Index #:pad Index String))
-(define (natural->bitstring n #:pad pad-width)
+(: natural->bitstring (-> Index Index String))
+(define (natural->bitstring n pad-width)
   (~r n #:base 2 #:min-width pad-width #:pad-string "0"))
 
 ;; Convert a binary string to a natural number

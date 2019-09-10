@@ -10,14 +10,13 @@
     [source : Path-String]
     [dataset : (Vectorof (Listof Index))]
     [modulegraph : ModuleGraph])]
-  [from-rktd (->* [String] [#:graph (U Path #f)] Summary)]
+  [from-rktd (->* [String] [(U Path #f)] Summary)]
   [all-variations (-> Summary (Sequenceof String))]
   [get-num-variations (-> Summary Index)]
   [get-project-name (-> Summary String)]
   [predicate->variations (-> Summary (-> String Boolean) (Sequenceof String))]
   [untyped-mean (-> Summary Real)]
-  [variation->mean-runtime (-> Summary String Real)]
-)
+  [variation->mean-runtime (-> Summary String Real)])
 
 (define-type Summary summary)
 

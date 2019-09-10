@@ -31,8 +31,7 @@
 (require/typed/check "bitstring.rkt"
   [bitstring->natural (-> String Index)]
   [log2 (-> Index Index)]
-  [natural->bitstring (-> Index #:pad Index String)]
-)
+  [natural->bitstring (-> Index Index String)])
 
 ;; =============================================================================
 ;; -- data definition: summary
@@ -58,8 +57,8 @@
 
 ;; Create a summary from a raw dataset.
 ;; Infers the location of the module graph if #:graph is not given explicitly
-(: from-rktd (->* [String] [#:graph (U Path #f)] Summary))
-(define (from-rktd filename #:graph [graph-path #f])
+(: from-rktd (->* [String] [(U Path #f)] Summary))
+(define (from-rktd filename [graph-path #f])
   (define path (string->path filename))
   (define dataset (rktd->dataset path))
   (define mg (from-tex (or graph-path (infer-graph path))))
@@ -122,7 +121,7 @@
 (: all-variations (-> Summary (Sequenceof String)))
 (define (all-variations sm)
   (define M (get-num-modules sm))
-  (stream-map (lambda ([n : Index]) (natural->bitstring n #:pad M))
+  (stream-map (lambda ([n : Index]) (natural->bitstring n M))
               (in-range (get-num-variations sm))))
 
 (: get-module-names (-> Summary (Listof String)))

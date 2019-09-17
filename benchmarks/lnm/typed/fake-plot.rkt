@@ -1,7 +1,8 @@
 #lang racket/base
 
 (require pict
-         plot/pict)
+         plot/pict
+         (only-in plot/utils linear-seq))
 
 (provide
   (struct-out pre-tick)
@@ -19,6 +20,7 @@
   plot-font-face
   plot-font-size
   no-ticks
+  linear-seq
   (rename-out [-function function]
               [-plot-pict plot-pict]
               [-lines lines]))

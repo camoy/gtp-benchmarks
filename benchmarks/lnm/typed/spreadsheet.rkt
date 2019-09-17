@@ -73,6 +73,6 @@
                            [format 'tab])
   (define vec (cast (file->value input-filename) (Vectorof (Listof Index))))
   (define suffix (symbol->extension format))
-  (define out (or output (path-replace-suffix input-filename suffix)))
+  (define out (or output (path-replace-extension input-filename suffix)))
   (define sep (symbol->separator format))
   (vector->spreadsheet vec out sep))

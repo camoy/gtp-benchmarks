@@ -28,6 +28,7 @@
   [plot-font-face   (-> String Void)]
   [plot-font-size   (-> Nonnegative-Real Void)]
   [no-ticks ticks]
+  [linear-seq (-> Real Real Nonnegative-Integer (Listof Real))] 
   [function
    (-> (-> Real Real)
        (U Real #f)
@@ -48,7 +49,7 @@
        Positive-Integer
        Pict)]
   [lines
-   (-> (Sequenceof (Sequenceof Real))
+   (-> (Listof (Listof Real))
        Symbol
        Nonnegative-Real
        Plot-Pen-Style

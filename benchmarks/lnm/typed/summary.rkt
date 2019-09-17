@@ -19,7 +19,7 @@
 (require
   require-typed-check
   racket/path
-  math/statistics
+  "math-adapted.rkt"
   (only-in racket/file file->value)
   (only-in racket/vector vector-append)
   "modulegraph-adapted.rkt")
@@ -69,7 +69,7 @@
 (: rktd->dataset (-> Path (Vectorof (Listof Index))))
 (define (rktd->dataset path)
   ;; Check .rktd
-  (unless (bytes=? #"rktd" (or (filename-extension path) #""))
+  (unless (bytes=? (string->bytes/utf-8 "rktd") (or (filename-extension path) (string->bytes/utf-8 "")))
     (parse-error "Cannot parse dataset '~a', is not .rktd" (path->string path)))
   ;; Get data
   (define vec (file->value path))

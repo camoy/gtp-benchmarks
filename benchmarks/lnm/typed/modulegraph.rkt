@@ -18,6 +18,7 @@
 
 (require
   racket/match
+  "list-adapted.rkt"
   (only-in racket/path file-name-from-path filename-extension)
   (only-in racket/sequence sequence->list)
   (only-in racket/string string-split string-trim)
@@ -75,7 +76,8 @@
 (define (ensure-tex filename)
   (define path (or (and (path? filename) filename)
                    (string->path filename)))
-  (unless (bytes=? #"tex" (or (filename-extension path) #""))
+  (unless (bytes=? (string->bytes/utf-8 "tex")
+                   (or (filename-extension path) (string->bytes/utf-8 "")))
     (parse-error "Cannot parse module graph from non-tex file '~a'" filename))
   ;; Remove anything past the first hyphen in the project name
   (define project-name (path->project-name path))
@@ -239,8 +241,8 @@
   (: get-key (-> (Pairof (Pairof Index String) (Listof String)) String))
   (define (get-key x)
     (string-append (cdar x) ".rkt"))
-  (define sorted ((inst sort (Pairof (Pairof Index String) (Listof String)) String)
-    adjlist string<? #:key get-key))
+  (define sorted ((inst sort* (Pairof (Pairof Index String) (Listof String)) String)
+    adjlist string<? get-key))
   (unless (equal? (for/list : (Listof Index)
                     ([x (in-list sorted)])
                     (caar x))
@@ -252,4 +254,3 @@
     (for/list ([tag+neighbors (in-list sorted)])
       (cons (cdar tag+neighbors) (cdr tag+neighbors))))
   (modulegraph project-name untagged))
-

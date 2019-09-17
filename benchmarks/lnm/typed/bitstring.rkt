@@ -10,10 +10,9 @@
 ;; -----------------------------------------------------------------------------
 
 (require
-  (only-in racket/math exact-ceiling exact-truncate)
-  (only-in racket/format ~r)
-  (only-in racket/list remove-duplicates)
-)
+ (only-in racket/math exact-ceiling exact-truncate)
+ "format-adapted.rkt"
+ (only-in racket/list remove-duplicates))
 
 ;; =============================================================================
 
@@ -26,7 +25,7 @@
 ;; Convert a natural number to a binary string, padded to the supplied width
 (: natural->bitstring (-> Index Index String))
 (define (natural->bitstring n pad-width)
-  (~r n #:base 2 #:min-width pad-width #:pad-string "0"))
+  (~r n 2 pad-width "0"))
 
 ;; Convert a binary string to a natural number
 (: bitstring->natural (-> String Index))

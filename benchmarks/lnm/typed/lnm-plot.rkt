@@ -19,7 +19,6 @@
   "summary-adapted.rkt"
   "plot-adapted.rkt"
   (only-in racket/math exact-floor)
-  (only-in plot/typed/utils linear-seq)
   (only-in racket/math exact-floor exact-ceiling))
 
 (require/typed racket/stream

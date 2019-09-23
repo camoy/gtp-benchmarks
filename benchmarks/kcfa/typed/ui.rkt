@@ -4,7 +4,7 @@
 
 (require
   require-typed-check
-  racket/set
+  (except-in racket/set set/c)
   "structs-adapted.rkt"
   "benv-adapted.rkt"
   "denotable-adapted.rkt"

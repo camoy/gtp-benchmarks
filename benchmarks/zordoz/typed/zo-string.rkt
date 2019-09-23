@@ -50,9 +50,9 @@
 ;; Convert any zo struct to a string.
 ;; First builds a spec, then forces the thunks in that spec to build a string.
 ;; If `deep` is `#f`, only formats the name of the struct `z`.
-(: zo->string (->* (zo) (#:deep? Boolean) String))
+(: zo->string (->* (zo) (Boolean) String))
 (define
-  (zo->string z #:deep? [deep? #t])
+  (zo->string z [deep? #t])
   (format-spec deep? (zo->spec z)))
 
 ;; --- syntax: lazy cons to delay evaluation of tail

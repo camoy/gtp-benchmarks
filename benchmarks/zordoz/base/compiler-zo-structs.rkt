@@ -53,18 +53,18 @@
 
 ;; In toplevels of resove prefix:
 (define-form-struct global-bucket ([name symbol?])) ; top-level binding
-(define-form-struct module-variable ([modidx module-path-index?] 
-                                     [sym symbol?] 
-                                     [pos exact-integer?] 
+(define-form-struct module-variable ([modidx module-path-index?]
+                                     [sym symbol?]
+                                     [pos exact-integer?]
                                      [phase exact-nonnegative-integer?]
-                                     [constantness (or/c #f 'constant 'fixed 
-                                                         function-shape? 
+                                     [constantness (or/c #f 'constant 'fixed
+                                                         function-shape?
                                                          struct-shape?)]))
 
-(define-form-struct prefix ([num-lifts exact-nonnegative-integer?] 
-                            [toplevels (listof (or/c #f symbol? global-bucket? module-variable?))] 
-                            [stxs (listof (or/c #f stx?))] ; #f is unusual, but it can happen when one is optimized away at the last moment
-                            [src-inspector-desc symbol?]))
+(define-form-struct prefix ([num-lifts exact-nonnegative-integer?]
+                            [toplevels (listof (or/c #f symbol? global-bucket? module-variable?))]
+                            [src-inspector-desc symbol?]
+                            [stxs (listof (or/c #f stx?))])) ; #f is unusual, but it can happen when one is optimized away at the last moment))
 
 (define-form-struct form ())
 (define-form-struct (expr form) ())
@@ -76,21 +76,21 @@
                                      [code (or/c form? any/c)])) ; compiled code always wrapped with this
 
 ;; A provided identifier
-(define-form-struct provided ([name symbol?] 
-                              [src (or/c module-path-index? #f)] 
-                              [src-name symbol?] 
+(define-form-struct provided ([name symbol?]
+                              [src (or/c module-path-index? #f)]
+                              [src-name symbol?]
                               [nom-src any/c] ; should be (or/c module-path-index? #f)
-                              [src-phase exact-nonnegative-integer?] 
+                              [src-phase exact-nonnegative-integer?]
                               [protected? boolean?]))
 
-(define-form-struct (toplevel expr) ([depth exact-nonnegative-integer?] 
-                                     [pos exact-nonnegative-integer?] 
-                                     [const? boolean?] 
+(define-form-struct (toplevel expr) ([depth exact-nonnegative-integer?]
+                                     [pos exact-nonnegative-integer?]
+                                     [const? boolean?]
                                      [ready? boolean?]))  ; access binding via prefix array (which is on stack)
 
 (define-form-struct (seq form) ([forms (listof (or/c form? any/c))])) ; `begin'
 (define-form-struct (seq-for-syntax form) ([forms (listof (or/c form? any/c))] ; `begin-for-syntax'
-                                           [prefix prefix?] 
+                                           [prefix prefix?]
                                            [max-let-depth exact-nonnegative-integer?]
                                            [dummy (or/c toplevel? #f)]))
 
@@ -99,10 +99,10 @@
 
 ;; Definitions (top level or within module):
 (define-form-struct (def-values form) ([ids (listof (or/c toplevel? symbol?))]
-                                       [rhs (or/c expr? seq? inline-variant? any/c)])) 
+                                       [rhs (or/c expr? seq? inline-variant? any/c)]))
 (define-form-struct (def-syntaxes form) ([ids (listof (or/c toplevel? symbol?))]
-                                         [rhs (or/c expr? seq? any/c)] 
-                                         [prefix prefix?] 
+                                         [rhs (or/c expr? seq? any/c)]
+                                         [prefix prefix?]
                                          [max-let-depth exact-nonnegative-integer?]
                                          [dummy (or/c toplevel? #f)]))
 
@@ -146,22 +146,22 @@
 (define-form-struct (case-lam expr) ([name (or/c symbol? vector? empty?)] [clauses (listof (or/c lam? closure?))]))
 
 (define-form-struct (let-one expr) ([rhs (or/c expr? seq? any/c)]  ; pushes one value onto stack
-                                    [body (or/c expr? seq? any/c)] 
+                                    [body (or/c expr? seq? any/c)]
                                     [type (or/c #f 'flonum 'fixnum 'extflonum)]
                                     [unused? boolean?]))
 (define-form-struct (let-void expr) ([count exact-nonnegative-integer?] [boxes? boolean?] [body (or/c expr? seq? any/c)])) ; create new stack slots
-(define-form-struct (install-value expr) ([count exact-nonnegative-integer?] 
-                                          [pos exact-nonnegative-integer?] 
-                                          [boxes? boolean?] 
-                                          [rhs (or/c expr? seq? any/c)] 
+(define-form-struct (install-value expr) ([count exact-nonnegative-integer?]
+                                          [pos exact-nonnegative-integer?]
+                                          [boxes? boolean?]
+                                          [rhs (or/c expr? seq? any/c)]
                                           [body (or/c expr? seq? any/c)])) ; set existing stack slot(s)
 (define-form-struct (let-rec expr) ([procs (listof lam?)] [body (or/c expr? seq? any/c)])) ; put `letrec'-bound closures into existing stack slots
 (define-form-struct (boxenv expr) ([pos exact-nonnegative-integer?] [body (or/c expr? seq? any/c)])) ; box existing stack element
 
-(define-form-struct (localref expr) ([unbox? boolean?] 
-                                     [pos exact-nonnegative-integer?] 
-                                     [clear? boolean?] 
-                                     [other-clears? boolean?] 
+(define-form-struct (localref expr) ([unbox? boolean?]
+                                     [pos exact-nonnegative-integer?]
+                                     [clear? boolean?]
+                                     [other-clears? boolean?]
                                      [type (or/c #f 'flonum 'fixnum 'extflonum)])) ; access local via stack
 
 
@@ -169,16 +169,16 @@
 
 (define-form-struct (application expr) ([rator (or/c expr? seq? any/c)] [rands (listof (or/c expr? seq? any/c))])) ; function call
 (define-form-struct (branch expr) ([test (or/c expr? seq? any/c)] [then (or/c expr? seq? any/c)] [else (or/c expr? seq? any/c)])) ; `if'
-(define-form-struct (with-cont-mark expr) ([key (or/c expr? seq? any/c)] 
-                                           [val (or/c expr? seq? any/c)] 
+(define-form-struct (with-cont-mark expr) ([key (or/c expr? seq? any/c)]
+                                           [val (or/c expr? seq? any/c)]
                                            [body (or/c expr? seq? any/c)])) ; `with-continuation-mark'
 (define-form-struct (beg0 expr) ([seq (listof (or/c expr? seq? any/c))])) ; `begin0'
 (define-form-struct (splice form) ([forms (listof (or/c form? any/c))])) ; top-level `begin'
 (define-form-struct (varref expr) ([toplevel (or/c toplevel? #t)] [dummy (or/c toplevel? #f)])) ; `#%variable-reference'
 (define-form-struct (assign expr) ([id toplevel?] [rhs (or/c expr? seq? any/c)] [undef-ok? boolean?])) ; top-level or module-level set!
 (define-form-struct (apply-values expr) ([proc (or/c expr? seq? any/c)] [args-expr (or/c expr? seq? any/c)])) ; `(call-with-values (lambda () ,args-expr) ,proc)
-(define-form-struct (with-immed-mark expr) ([key (or/c expr? seq? any/c)] 
-                                            [def-val (or/c expr? seq? any/c)] 
+(define-form-struct (with-immed-mark expr) ([key (or/c expr? seq? any/c)]
+                                            [def-val (or/c expr? seq? any/c)]
                                             [body (or/c expr? seq? any/c)]))
 (define-form-struct (primval expr) ([id exact-nonnegative-integer?])) ; direct preference to a kernel primitive
 
@@ -231,8 +231,8 @@
                                                       [import-phase (or/c #f exact-integer?)]
                                                       [inspector-desc (or/c #f symbol?)]))
 
-(define-form-struct all-from-module ([path module-path-index?] 
-                                     [phase (or/c exact-integer? #f)] 
+(define-form-struct all-from-module ([path module-path-index?]
+                                     [phase (or/c exact-integer? #f)]
                                      [src-phase (or/c exact-integer? #f)]
                                      [inspector-desc symbol?]
                                      [exceptions (listof symbol?)]

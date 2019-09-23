@@ -10,19 +10,20 @@
 (require require-typed-check
          (only-in racket/string string-split string-join string-trim)
          "../base/typed-zo-structs.rkt"
-         racket/match)
+         racket/match
+         scv-gt/opaque)
 
 (require/typed/check "zo-string.rkt"
   [zo->spec (-> zo Spec)]
-  [zo->string (->* (zo) (#:deep? Boolean) String)])
+  [zo->string (->* (zo) (Boolean) String)])
 (require/typed/check "zo-transition.rkt"
   [zo-transition (-> zo String (values (U zo (Listof zo)) Boolean))])
 (require/typed/check "zo-find.rkt"
-  [zo-find (-> zo String [#:limit (U Natural #f)] (Listof result))]
+  [zo-find (-> zo String (U Natural #f) (Listof result))]
   [#:struct result ([zo : zo]
                     [path : (Listof zo)])])
-(require/typed "../base/compiler-zo-parse.rkt"
-               [zo-parse (->* () (Input-Port) zo)])
+(require/typed/opaque "../base/compiler-zo-parse.rkt"
+                      [zo-parse (->* () (Input-Port) zo)])
 
 ;; -----------------------------------------------------------------------------
 
@@ -366,7 +367,7 @@
     [(cons x _)
      (define z (if (result? x) (result-zo x) x))
      (printf "~a[~a]\n"
-             (zo->string z #:deep? #f)
+             (zo->string z #f)
              (length ctx))]
     [_
      (error 'zo-shell:info (format "Unknown context '~a'"  ctx))]))
@@ -438,10 +439,10 @@
                  [c2 (in-string prefix)])
          (char=? c1 c2))))
 
-(: find-all (->* [zo (Listof String)] [#:limit (U Natural #f)] Void))
-(define (find-all ctx args #:limit [lim #f])
+(: find-all (->* [zo (Listof String)] [(U Natural #f)] Void))
+(define (find-all ctx args [lim #f])
   (for ([arg (in-list args)])
-    (void (length (zo-find ctx arg #:limit lim))))
+    (void (length (zo-find ctx arg lim))))
   (void))
 
 ;; Split the string `raw` by whitespace and
@@ -464,4 +465,3 @@
   (for/or ([str (in-vector v)])
     (and (< 0 (string-length str))
          (eq? #\- (string-ref str 0)))))
-

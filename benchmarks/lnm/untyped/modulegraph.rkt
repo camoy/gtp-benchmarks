@@ -18,6 +18,7 @@
 
 (require
   racket/match
+  "list-adapted.rkt"
   (only-in racket/path file-name-from-path filename-extension)
   (only-in racket/sequence sequence->list)
   (only-in racket/string string-split string-trim)
@@ -86,7 +87,7 @@
 (define (ensure-tex filename)
   (define path (or (and (path? filename) filename)
                    (string->path filename)))
-  (unless (bytes=? #"tex" (filename-extension path))
+  (unless (bytes=? (string->bytes/utf-8 "tex") (filename-extension path))
     (parse-error "Cannot parse module graph from non-tex file '~a'" filename))
   ;; Remove anything past the first hyphen in the project name
   (define project-name (path->project-name path))
@@ -230,7 +231,7 @@
               (id->name (cdr src+dst))))))
   ;; Alphabetically sort the adjlist, check that the indices match the ordering
   ;; Need to append .rkt, else things like (string< "a-base" "a") fail. They should pass...
-  (define sorted (sort adjlist string<? #:key (lambda (x) (string-append (cdar x) ".rkt"))))
+  (define sorted (sort* adjlist string<? (lambda (x) (string-append (cdar x) ".rkt"))))
   (unless (equal? (map caar sorted)
                   (sequence->list (in-range (length sorted))))
     (parse-error "Indices do not match alphabetical ordering on module names. Is the TiKZ graph correct?\n    Source: '~a'\n" (map car sorted)))
@@ -239,4 +240,3 @@
     (for/list ([tag+neighbors (in-list sorted)])
       (cons (cdar tag+neighbors) (cdr tag+neighbors))))
   (modulegraph project-name untagged))
-

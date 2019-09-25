@@ -19,15 +19,15 @@
   ;; Create L-N/M pictures
   (time
     (begin
-      (lnm-plot summary #:L l-list
-                        #:N 3
-                        #:M 10
-                        #:max-overhead 20
-                        #:cutoff-proportion 0.6
-                        #:num-samples NUM_SAMPLES
-                        #:plot-height 300
-                        #:plot-width 400)
-      (rktd->spreadsheet filename #:output "./test-case-output.out" #:format 'tab)
+      (lnm-plot summary l-list
+                        3
+                        10
+                        20
+                        NUM_SAMPLES
+                        0.6
+                        400
+                        300)
+      (rktd->spreadsheet filename "./test-case-output.out" 'tab)
       (void))))
 
 (main "../base/data/snake.rktd")

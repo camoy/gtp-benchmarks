@@ -55,17 +55,17 @@
   (void)
   ;; For each row, print the config ID and all the values
   (for ([(row n) (in-indexed vec)])
-    (void (natural->bitstring n #:pad (log2 num-configs)))
+    (void (natural->bitstring n (log2 num-configs)))
     (for ([v row]) (void "~a~a" sep v))
     (void)))
 
 ;; Print the rktd data stored in file `input-filename` to a spreadsheet.
 ;; (: rktd->spreadsheet (->* (Path-String) (#:output (U Path-String #f) #:format Symbol) String))
 (define (rktd->spreadsheet input-filename
-                             #:output [output #f]
-                             #:format [format 'tab])
+                           [output #f]
+                           [format 'tab])
   (define vec (file->value input-filename))
   (define suffix (symbol->extension format))
-  (define out (or output (path-replace-suffix input-filename suffix)))
+  (define out (or output (path-replace-extension input-filename suffix)))
   (define sep (symbol->separator format))
   (vector->spreadsheet vec out sep))

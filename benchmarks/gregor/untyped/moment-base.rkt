@@ -1,4 +1,3 @@
-
 #lang racket/base
 
 ;; Support for moment.rkt
@@ -16,11 +15,13 @@
   require-typed-check
   racket/match
   "gregor-structs.rkt"
-  "format-adapter.rkt"
+  scv-gt/opaque
 )
 (require (only-in "datetime.rkt"
     datetime->iso8601 ;(-> DateTime String)]
-))
+    ))
+
+(require/opaque "fake-format.rkt" ~r**)
 
 ;; =============================================================================
 

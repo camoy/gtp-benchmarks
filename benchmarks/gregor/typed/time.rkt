@@ -20,8 +20,8 @@
 ;; -----------------------------------------------------------------------------
 
 (require
-  require-typed-check
-  "format-adapter.rkt"
+ require-typed-check
+ scv-gt/opaque
   "core-adapter.rkt"
   "gregor-adapter.rkt"
   racket/match)
@@ -30,7 +30,16 @@
     [hmsn->day-ns (-> HMSN Natural)]
     [day-ns->hmsn (-> Natural HMSN)]
     [NS/SECOND Natural]
-)
+    )
+
+(require/typed/opaque "fake-format.rkt"
+  [~r (-> Exact-Rational
+          Nonnegative-Integer
+          String
+          String)]
+  [~r* (-> Exact-Rational
+           Exact-Nonnegative-Integer
+           String)])
 
 ;; =============================================================================
 

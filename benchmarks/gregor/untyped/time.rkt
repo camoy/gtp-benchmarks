@@ -20,17 +20,19 @@
 ;; -----------------------------------------------------------------------------
 
 (require
-  require-typed-check
-  "format-adapter.rkt"
-  "core-structs.rkt"
-  "gregor-structs.rkt"
-  racket/match)
+ require-typed-check
+ scv-gt/opaque
+ "core-structs.rkt"
+ "gregor-structs.rkt"
+ racket/match)
 (require (only-in
   "hmsn.rkt"
     hmsn->day-ns ;(-> HMSN Natural)]
     day-ns->hmsn ;(-> Natural HMSN)]
     NS/SECOND ;Natural]
-))
+    ))
+
+(require/opaque "fake-format.rkt" ~r ~r*)
 
 ;; =============================================================================
 

@@ -23,7 +23,7 @@
 (require
   require-typed-check
   (only-in racket/math exact-round)
-  "format-adapter.rkt"
+  scv-gt/opaque
   "core-adapter.rkt"
   "gregor-adapter.rkt"
   racket/match)
@@ -35,7 +35,13 @@
     [jdn->iso-wday (-> Integer (U 1 2 3 4 5 6 7))]
     [ymd->yday (-> YMD Natural)]
     [iso-weeks-in-year (-> Natural (U 52 53))]
-)
+    )
+
+(require/typed/opaque "fake-format.rkt"
+  [~r (-> Exact-Rational
+          Nonnegative-Integer
+          String
+          String)])
 
 ;; =============================================================================
 

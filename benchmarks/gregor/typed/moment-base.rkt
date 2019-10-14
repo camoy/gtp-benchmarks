@@ -15,11 +15,17 @@
   require-typed-check
   racket/match
   "gregor-adapter.rkt"
-  "format-adapter.rkt"
+  scv-gt/opaque
 )
 (require/typed/check "datetime.rkt"
     [datetime->iso8601 (-> DateTime String)]
-)
+    )
+
+(require/typed/opaque "fake-format.rkt"
+  [~r** (-> Exact-Rational
+            Nonnegative-Integer
+            String
+            String)])
 
 ;; =============================================================================
 

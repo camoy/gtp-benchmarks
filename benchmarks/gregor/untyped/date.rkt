@@ -24,7 +24,7 @@
   "core-structs.rkt"
   "gregor-structs.rkt"
   require-typed-check
-  "format-adapter.rkt"
+  scv-gt/opaque
   racket/match)
 
 (require (only-in
@@ -34,7 +34,9 @@
     jdn->iso-wday ;(-> Integer (U 0 1 2 3 4 5 6))]
     ymd->yday ;(-> YMD Natural)]
     iso-weeks-in-year ;(-> Natural (U 52 53))]
-))
+    ))
+
+(require/opaque "fake-format.rkt" ~r)
 
 ;; =============================================================================
 

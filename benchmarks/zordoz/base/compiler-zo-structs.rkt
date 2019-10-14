@@ -63,8 +63,8 @@
 
 (define-form-struct prefix ([num-lifts exact-nonnegative-integer?]
                             [toplevels (listof (or/c #f symbol? global-bucket? module-variable?))]
-                            [src-inspector-desc symbol?]
-                            [stxs (listof (or/c #f stx?))])) ; #f is unusual, but it can happen when one is optimized away at the last moment))
+                            [stxs (listof (or/c #f stx?))]
+                            [src-inspector-desc symbol?])) ; #f is unusual, but it can happen when one is optimized away at the last moment))
 
 (define-form-struct form ())
 (define-form-struct (expr form) ())

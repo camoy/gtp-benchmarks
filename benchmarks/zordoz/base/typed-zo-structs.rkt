@@ -11,9 +11,8 @@
    (Pair String (Listof (Pair String (-> (U Spec String)))))))
 (provide Spec)
 
-#;(require scv-gt/opaque)
-
-#;(require/typed/provide/opaque "compiler-zo-structs.rkt"
+(require scv-gt/opaque)
+(require/typed/provide/opaque "compiler-zo-structs.rkt"
                [#:struct zo ()]
                [#:struct (compilation-top zo) (
                  [max-let-depth : Exact-Nonnegative-Integer]
@@ -24,8 +23,8 @@
                [#:struct (prefix zo) (
                  [num-lifts : Exact-Nonnegative-Integer]
                  [toplevels : (Listof (U #f Symbol global-bucket module-variable))]
-                 [src-inspector-desc : Symbol]
-                 [stxs : (Listof (U #f stx))])]
+                 [stxs : (Listof (U #f stx))]
+                 [src-inspector-desc : Symbol])]
                [#:struct (global-bucket zo) ([name : Symbol])]
                [#:struct (module-variable zo) (
                  [modidx : Module-Path-Index]

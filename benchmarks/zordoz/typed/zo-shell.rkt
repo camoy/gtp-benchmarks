@@ -172,19 +172,24 @@
     [(cons (? (cmd? ALST) raw) cmd*)
      (print-alias) ((repl ctx hist pre-hist) cmd*)]
     [(cons (? (cmd? BACK) raw) cmd*)
-     ((call-with-values (lambda () (back raw ctx hist pre-hist)) repl) cmd*)]
+     ((let-values ([(c h p) (back raw ctx hist pre-hist)])
+        (repl c h p)) cmd*)]
     [(cons (? (cmd? DIVE) raw) cmd*)
-     ((call-with-values (lambda () (dive raw ctx hist pre-hist)) repl) cmd*)]
+     ((let-values ([(c h p) (dive raw ctx hist pre-hist)])
+        (repl c h p)) cmd*)]
     [(cons (? (cmd? FIND) raw) cmd*)
-     ((call-with-values (lambda () (find raw ctx hist pre-hist)) repl) cmd*)]
+     ((let-values ([(c h p) (find raw ctx hist pre-hist)])
+        (repl c h p)) cmd*)]
     [(cons (? (cmd? HELP) raw) cmd*)
      (begin (print-help) ((repl ctx hist pre-hist) cmd*))]
     [(cons (? (cmd? INFO) raw) cmd*)
      (begin (print-context ctx) ((repl ctx hist pre-hist) cmd*))]
     [(cons (? (cmd? JUMP) raw) cmd*)
-     ((call-with-values (lambda () (jump raw ctx hist pre-hist)) repl) cmd*)]
+     ((let-values ([(c h p) (jump raw ctx hist pre-hist)])
+        (repl c h p)) cmd*)]
     [(cons (? (cmd? SAVE) raw) cmd*)
-     ((call-with-values (lambda () (save raw ctx hist pre-hist)) repl) cmd*)]
+     ((let-values ([(c h p) (save raw ctx hist pre-hist)])
+        (repl c h p)) cmd*)]
     [(cons (? (cmd? QUIT) raw) cmd*)
      (print-goodbye)]
     [(cons raw cmd*)

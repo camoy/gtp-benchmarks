@@ -19,10 +19,14 @@
 (require
   require-typed-check
   racket/path
-  "math-adapted.rkt"
+  scv-gt/opaque
   (only-in racket/file file->value)
   (only-in racket/vector vector-append)
   "modulegraph-adapted.rkt")
+
+(require/opaque math/statistics
+  [mean (-> (Sequenceof Real)
+            Real)])
 
 (require/typed racket/stream
   [stream-map (-> (-> Index String) (Sequenceof Index) (Sequenceof String))]

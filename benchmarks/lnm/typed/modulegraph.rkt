@@ -18,11 +18,17 @@
 
 (require
   racket/match
-  "list-adapted.rkt"
+  scv-gt/opaque
   (only-in racket/path file-name-from-path filename-extension)
   (only-in racket/sequence sequence->list)
-  (only-in racket/string string-split string-trim)
-)
+  (only-in racket/string string-split string-trim))
+
+(require/typed/opaque "fake-list.rkt"
+  [sort* (All (a b)
+           (-> (Listof a)
+               (-> b b Boolean)
+               (U (-> a b) False)
+               (Listof a)))])
 
 ;; =============================================================================
 ;; --- data definition: modulegraph

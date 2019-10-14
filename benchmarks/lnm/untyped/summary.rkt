@@ -19,7 +19,7 @@
 (require
   racket/path
   racket/stream
-  "math-adapted.rkt"
+  scv-gt/opaque
   (only-in racket/file file->value)
   (only-in racket/vector vector-append)
   (only-in "modulegraph.rkt"
@@ -32,6 +32,8 @@
     log2
     natural->bitstring)
 )
+
+(require/opaque math/statistics mean)
 
 ;; =============================================================================
 ;; -- data definition: summary

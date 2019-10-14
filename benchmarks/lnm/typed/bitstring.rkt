@@ -11,8 +11,15 @@
 
 (require
  (only-in racket/math exact-ceiling exact-truncate)
- "format-adapted.rkt"
+ scv-gt/opaque
  (only-in racket/list remove-duplicates))
+
+(require/typed/opaque "fake-format.rkt"
+  [~r (-> Exact-Rational
+          Positive-Integer
+          Nonnegative-Integer
+          String
+          String)])
 
 ;; =============================================================================
 

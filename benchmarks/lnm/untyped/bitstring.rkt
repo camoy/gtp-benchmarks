@@ -11,9 +11,11 @@
 
 (require
   (only-in racket/math exact-ceiling)
-  "format-adapted.rkt"
+  scv-gt/opaque
   (only-in racket/list remove-duplicates)
-)
+  )
+
+(require/opaque "fake-format.rkt" ~r)
 
 ;; =============================================================================
 

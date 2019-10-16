@@ -9,7 +9,7 @@
 
 (require require-typed-check
          (only-in racket/string string-split string-join string-trim)
-         "../base/typed-zo-structs.rkt"
+         "typed-zo-structs.rkt"
          racket/match
          scv-gt/opaque)
 
@@ -22,7 +22,8 @@
   [zo-find (-> zo String (U Natural #f) (Listof result))]
   [#:struct result ([zo : zo]
                     [path : (Listof zo)])])
-(require/typed/opaque "../base/compiler-zo-parse.rkt"
+
+(require/typed/opaque "compiler-zo-parse.rkt"
                       [zo-parse (->* () (Input-Port) zo)])
 
 ;; -----------------------------------------------------------------------------

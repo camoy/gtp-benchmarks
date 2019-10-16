@@ -16,7 +16,7 @@
  "zo-find.rkt"
  scv-gt/opaque)
 
-(require/opaque "../base/compiler-zo-parse.rkt" zo-parse zo?)
+(require/opaque "compiler-zo-parse.rkt" zo-parse zo?)
 
 ;; -----------------------------------------------------------------------------
 

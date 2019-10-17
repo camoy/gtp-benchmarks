@@ -23,7 +23,7 @@
   [#:struct result ([zo : zo]
                     [path : (Listof zo)])])
 
-(require/typed/opaque "compiler-zo-parse.rkt"
+(require/typed/opaque "fake-compiler-zo-parse.rkt"
                       [zo-parse (->* () (Input-Port) zo)])
 
 ;; -----------------------------------------------------------------------------

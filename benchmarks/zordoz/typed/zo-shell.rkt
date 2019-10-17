@@ -19,7 +19,7 @@
 (require/typed/check "zo-transition.rkt"
   [zo-transition (-> zo String (values (U zo (Listof zo)) Boolean))])
 (require/typed/check "zo-find.rkt"
-  [zo-find (-> zo String (U Natural #f) (Listof result))]
+  [zo-find (->* (zo String) ((U Natural #f)) (Listof result))]
   [#:struct result ([zo : zo]
                     [path : (Listof zo)])])
 

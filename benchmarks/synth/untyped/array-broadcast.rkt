@@ -22,7 +22,7 @@
   (and (<= 0 n)
        (<  n 999999999999)))
 
-(define array-broadcasting (make-parameter #t))
+(define array-broadcasting (box #t))
 
 (define (shift-stretch-axes arr new-ds)
   (define old-ds (array-shape arr))
@@ -103,7 +103,7 @@
                (shape-permissive-broadcast ds1 ds2 dims fail)
                (shape-normal-broadcast ds1 ds2 dims fail)))]))
 
-(define (array-shape-broadcast dss [broadcasting (array-broadcasting)])
+(define (array-shape-broadcast dss [broadcasting (unbox array-broadcasting)])
   (define (fail) (error 'array-shape-broadcast
                         "incompatible array shapes (array-broadcasting ~v): ~a"
                         broadcasting

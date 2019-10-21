@@ -55,7 +55,7 @@
 ;; Normalizes output to be within [-1,1].
 
 ;; mix : Weighted-Signal * -> (Array Float)
-(define (mix . ss)
+(define (mix ss)
   (define signals
     (for/list ([s ss])
       (car s)))
@@ -65,13 +65,17 @@
   (define downscale-ratio (/ 1.0 (apply + weights)))
   ;; scale-signal : Float -> (Float -> Float)
   (define ((scale-signal w) x) (* x w downscale-ratio))
-  (parameterize ([array-broadcasting 'permissive]) ; repeat short signals
+  (define old-array-broadcasting (unbox array-broadcasting))
+  (set-box! array-broadcasting 'permissive)
+  (define result
     (for/fold ([res (array-map (scale-signal (car weights))
                                (car signals))])
-        ([s (in-list (cdr signals))]
-         [w (in-list (cdr weights))])
+              ([s (in-list (cdr signals))]
+               [w (in-list (cdr weights))])
       (define scale (scale-signal w))
       (array-map (lambda (acc  ; : Float
                           new) ; : Float
                    (+ acc (scale new)))
-                 res s))))
+                 res s)))
+  (set-box! array-broadcasting old-array-broadcasting)
+  result)

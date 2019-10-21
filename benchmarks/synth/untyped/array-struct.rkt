@@ -10,11 +10,14 @@
            unsafe-array-index->value-index)
          "data.rkt")
 
+(define-values (array? array-shape array-size unsafe-array-proc)
+  (values Array? Array-shape Array-size Array-unsafe-proc))
+
 (provide
- (rename-out (Array? array?))
- (rename-out (Array-shape array-shape))
- (rename-out (Array-size  array-size))
- (rename-out (Array-unsafe-proc unsafe-array-proc))
+ array?
+ array-shape
+ array-size
+ unsafe-array-proc
  array-default-strict!
  array-strict?
  array-strictness
@@ -154,7 +157,7 @@
           [dims   (vector-length ds)])
     (define-syntax-rule (g js j)
       (g-expr js j))
-    (define size 
+    (define size
       (let loop  ([k   0] [size   1])
         (cond [(k . < . dims)  (loop (+ k 1) (fx* size (vector-ref ds k)))]
               [else  size])))
@@ -167,7 +170,7 @@
 
 ;; -- array-struct
 
-(define array-strictness (make-parameter #t))
+(define array-strictness (box #t))
 
 (define-syntax-rule (make-unsafe-array-proc ds ref)
   (lambda (js)
@@ -184,7 +187,7 @@
 
 (define (array-default-strict! arr)
   (define strict? (Array-strict? arr))
-  (when (and (not (unbox strict?)) (array-strictness))
+  (when (and (not (unbox strict?)) (unbox array-strictness))
     ((Array-strict! arr))
     (set-box! strict? #t)))
 
@@ -251,4 +254,3 @@
   (define proc (make-unsafe-array-proc ds (λ (j) (vector-ref vs j))))
   (define set-proc (make-unsafe-array-set-proc A ds (λ (j v) (vector-set! vs j v))))
   (Mutable-Array ds (vector-length vs) (box #t) void proc set-proc vs))
-

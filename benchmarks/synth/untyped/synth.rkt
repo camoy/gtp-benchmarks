@@ -51,7 +51,7 @@
 ;; -- synth
 
 ;; TODO this slows down a bit, it seems, but improves memory use
-(array-strictness #f)
+(set-box! array-strictness #f)
 
 (define fs 44100)
 (define bits-per-sample 16)
@@ -94,4 +94,3 @@
 ;; For now, it just converts a signal to a sequence.
 (define (emit signal)
   (signal->integer-sequence signal #:gain 0.3))
-

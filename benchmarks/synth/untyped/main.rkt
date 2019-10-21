@@ -16,7 +16,7 @@
 (define-syntax (mix/sugar stx)
   (syntax-parse stx
     [(_ sig:mixand ...)
-     #'(mix (list sig.signal sig.weight) ...)]))
+     #'(mix (list (list sig.signal sig.weight) ...))]))
 
 (define LOOPS 6)
 

@@ -81,7 +81,7 @@
 
 ;; assumes array of floats in [-1.0,1.0]
 ;; assumes gain in [0,1], which determines how loud the output is
-(define (signal->integer-sequence signal #:gain [gain 1])
+(define (signal->integer-sequence signal [gain 1])
   (for/vector #:length (array-size signal)
               ([sample (in-array signal)])
     (max 0 (min (sub1 (expt 2 bits-per-sample)) ; clamp
@@ -93,4 +93,4 @@
 ;; `emit` used to write a file.
 ;; For now, it just converts a signal to a sequence.
 (define (emit signal)
-  (signal->integer-sequence signal #:gain 0.3))
+  (signal->integer-sequence signal 0.3))

@@ -23,8 +23,6 @@
  array-strictness
  build-array
  make-array
- make-unsafe-array-proc
- make-unsafe-array-set-proc
  unsafe-build-array
  unsafe-build-simple-array
  unsafe-vector->array)
@@ -72,83 +70,6 @@
                                   (ji-loop (+ ji 1) (i-loop (+ i 1) j))]
                                  [else  j]))]
                         [else  (f js j)
-                               (fx+ j 1)]))
-                (void)])])))
-
-(define-syntax-rule (for-each-array-index ds-expr f-expr)
-  (let* ([ds  ds-expr]
-          [dims   (vector-length ds)])
-    (define-syntax-rule (f js)
-      (f-expr js))
-    (cond
-      [(= dims 0)  (f ds)]
-      [else
-       (define js  (make-vector dims 0))
-       (case dims
-         [(1)  (define d0 (vector-ref ds 0))
-               (let j0-loop ([j0   0])
-                 (when (j0 . < . d0)
-                   (vector-set! js 0 j0)
-                   (f js)
-                   (j0-loop (+ j0 1))))]
-         [(2)  (define d0 (vector-ref ds 0))
-               (define d1 (vector-ref ds 1))
-               (let j0-loop ([j0  0])
-                 (when (j0 . < . d0)
-                   (vector-set! js 0 j0)
-                   (let j1-loop  ([j1   0])
-                     (cond [(j1 . < . d1)
-                            (vector-set! js 1 j1)
-                            (f js)
-                            (j1-loop (+ j1 1))]
-                           [else
-                            (j0-loop (+ j0 1))]))))]
-         [else  (let i-loop  ([i   0])
-                  (cond [(i . < . dims)
-                         (define di  (vector-ref ds i))
-                         (let ji-loop  ([ji   0])
-                           (when (ji . < . di)
-                             (vector-set! js i ji)
-                             (i-loop (+ i 1))
-                             (ji-loop (+ ji 1))))]
-                        [else  (f js)]))])])))
-
-(define-syntax-rule (for-each-data-index ds-expr f-expr)
-  (let* ([ds   ds-expr]
-          [dims   (vector-length ds)])
-    (define-syntax-rule (f j)
-      (f-expr j))
-    (cond
-      [(= dims 0)  (f 0)]
-      [else
-       (case dims
-         [(1)  (define d0  (vector-ref ds 0))
-               (let j0-loop  ([j0   0])
-                 (when (j0 . < . d0)
-                   (f j0)
-                   (j0-loop (+ j0 1))))]
-         [(2)  (define d0  (vector-ref ds 0))
-               (define d1  (vector-ref ds 1))
-               (let j0-loop  ([j0   0]
-                                     [j   0])
-                 (when (j0 . < . d0)
-                   (let j1-loop  ([j1   0]
-                                         [j   j])
-                     (cond [(j1 . < . d1)
-                            (f j)
-                            (j1-loop (+ j1 1) (fx+ j 1))]
-                           [else
-                            (j0-loop (+ j0 1) j)]))))]
-         [else  (let i-loop  ([i   0]
-                                                   [j   0])
-                  (cond [(i . < . dims)
-                         (define di  (vector-ref ds i))
-                         (let ji-loop  ([ji   0]
-                                                             [j   j])
-                           (cond [(ji . < . di)
-                                  (ji-loop (+ ji 1) (i-loop (+ i 1) j))]
-                                 [else  j]))]
-                        [else  (f j)
                                (fx+ j 1)]))
                 (void)])])))
 
@@ -235,11 +156,6 @@
 (define settable-array? Settable-Array?)
 (define unsafe-settable-array-set-proc Settable-Array-set-proc)
 
-(define-syntax-rule (make-unsafe-array-set-proc A ds set!)
-  (lambda (js v)
-    (set! (unsafe-array-index->value-index ds js) v)))
-
-
 ;; -- from 'array-constructors.rkt'
 
 (define (make-array ds v)
@@ -251,6 +167,10 @@
 ;; --- from mutable-array.rkt
 
 (define (unsafe-vector->array ds vs)
-  (define proc (make-unsafe-array-proc ds (λ (j) (vector-ref vs j))))
-  (define set-proc (make-unsafe-array-set-proc A ds (λ (j v) (vector-set! vs j v))))
+  (define proc
+    (lambda (js)
+      ((λ (j) (vector-ref vs j)) (unsafe-array-index->value-index ds js))))
+  (define set-proc
+    (lambda (js v)
+      ((λ (j v) (vector-set! vs j v)) (unsafe-array-index->value-index ds js) v)))
   (Mutable-Array ds (vector-length vs) (box #t) void proc set-proc vs))

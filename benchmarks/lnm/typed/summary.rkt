@@ -19,7 +19,7 @@
 (require
   require-typed-check
   racket/path
-  scv-gt/opaque
+  scv-cr/opaque
   (only-in racket/file file->value)
   (only-in racket/vector vector-append)
   "modulegraph-adapted.rkt")

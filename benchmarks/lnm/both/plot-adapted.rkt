@@ -1,6 +1,6 @@
 #lang typed/racket/base
 
-(require scv-gt/opaque)
+(require scv-cr/opaque)
 
 (define-type Plot-Pen-Style-Sym
   (U 'transparent 'solid    'dot 'long-dash

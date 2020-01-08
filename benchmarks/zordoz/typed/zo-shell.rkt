@@ -11,7 +11,7 @@
          (only-in racket/string string-split string-join string-trim)
          "typed-zo-structs.rkt"
          racket/match
-         scv-gt/opaque)
+         scv-cr/opaque)
 
 (require/typed/check "zo-string.rkt"
   [zo->spec (-> zo Spec)]

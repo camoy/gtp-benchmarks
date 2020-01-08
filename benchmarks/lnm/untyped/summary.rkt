@@ -19,7 +19,7 @@
 (require
   racket/path
   racket/stream
-  scv-gt/opaque
+  scv-cr/opaque
   (only-in racket/file file->value)
   (only-in racket/vector vector-append)
   (only-in "modulegraph.rkt"

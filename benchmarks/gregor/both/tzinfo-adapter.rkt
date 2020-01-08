@@ -2,7 +2,7 @@
 
 ;; Adapter module for the tzinfo subproject
 
-(require scv-gt/opaque)
+(require scv-cr/opaque)
 
 (require/typed/provide/opaque "../base/tzinfo/main.rkt"
   [system-tzid (-> (U tz #f))]

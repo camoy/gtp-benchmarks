@@ -23,7 +23,7 @@
 (require
   require-typed-check
   (only-in racket/math exact-round)
-  scv-gt/opaque
+  scv-cr/opaque
   "core-adapter.rkt"
   "gregor-adapter.rkt"
   racket/match)

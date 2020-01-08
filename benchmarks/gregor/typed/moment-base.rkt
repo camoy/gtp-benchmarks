@@ -15,7 +15,7 @@
   require-typed-check
   racket/match
   "gregor-adapter.rkt"
-  scv-gt/opaque
+  scv-cr/opaque
 )
 (require/typed/check "datetime.rkt"
     [datetime->iso8601 (-> DateTime String)]

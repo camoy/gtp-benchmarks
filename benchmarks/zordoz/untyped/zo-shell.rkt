@@ -14,7 +14,7 @@
 (require "zo-string.rkt"
  "zo-transition.rkt"
  "zo-find.rkt"
- scv-gt/opaque)
+ scv-cr/opaque)
 
 (require/opaque "fake-compiler-zo-parse.rkt" zo-parse zo?)
 

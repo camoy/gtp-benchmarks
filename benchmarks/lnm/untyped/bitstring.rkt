@@ -11,7 +11,7 @@
 
 (require
   (only-in racket/math exact-ceiling)
-  scv-gt/opaque
+  scv-cr/opaque
   (only-in racket/list remove-duplicates)
   )
 

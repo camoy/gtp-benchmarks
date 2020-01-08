@@ -15,7 +15,7 @@
   require-typed-check
   racket/match
   "gregor-structs.rkt"
-  scv-gt/opaque
+  scv-cr/opaque
 )
 (require (only-in "datetime.rkt"
     datetime->iso8601 ;(-> DateTime String)]

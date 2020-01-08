@@ -21,7 +21,7 @@
 
 (require
  require-typed-check
- scv-gt/opaque
+ scv-cr/opaque
  "core-structs.rkt"
  "gregor-structs.rkt"
  racket/match)

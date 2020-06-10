@@ -54,12 +54,12 @@
 
 ;; -----------------------------------------------------------------------------
 
-(define (death-birth population0 rate #:random (q #false))
+(define (death-birth population0 rate (q #false))
   (match-define (cons a* b*) population0)
   (define payoffs
     (for/list  ([x  (in-vector a*)])
       (automaton-payoff x)))
-  [define substitutes (choose-randomly payoffs rate #:random q)]
+  [define substitutes (choose-randomly payoffs rate q)]
   (for ([i (in-range rate)][p (in-list substitutes)])
     (vector-set! a* i (clone (vector-ref b* p))))
   (shuffle-vector a* b*))

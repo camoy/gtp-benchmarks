@@ -11,7 +11,7 @@
   (-> Natural Population))
  (population-payoffs (-> Population [Listof Payoff]))
  (death-birth
-  (-> Population Natural [#:random (U False Real)] Population))
+  (->* [Population Natural] [(U False Real)] Population))
  (match-up*
   (-> Population Natural Population))
 )
@@ -56,4 +56,3 @@
 
 ;; -----------------------------------------------------------------------------
 (time (main))
-

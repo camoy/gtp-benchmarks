@@ -11,9 +11,16 @@
 
 (require
   (only-in racket/math exact-ceiling exact-truncate)
-  (only-in racket/format ~r)
   (only-in racket/list remove-duplicates)
+  corpse-reviver/opaque
 )
+
+(require/typed/opaque "_format.rkt"
+  [~r (-> Exact-Rational
+          Positive-Integer
+          Nonnegative-Integer
+          String
+          String)])
 
 ;; =============================================================================
 
@@ -24,9 +31,9 @@
   (if (index? res) res (error 'log2)))
 
 ;; Convert a natural number to a binary string, padded to the supplied width
-(: natural->bitstring (-> Index #:pad Index String))
-(define (natural->bitstring n #:pad pad-width)
-  (~r n #:base 2 #:min-width pad-width #:pad-string "0"))
+(: natural->bitstring (-> Index Index String))
+(define (natural->bitstring n pad-width)
+  (~r n 2 pad-width "0"))
 
 ;; Convert a binary string to a natural number
 (: bitstring->natural (-> String Index))

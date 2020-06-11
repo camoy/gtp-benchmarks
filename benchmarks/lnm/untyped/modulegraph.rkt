@@ -22,7 +22,10 @@
   (only-in racket/path file-name-from-path filename-extension)
   (only-in racket/sequence sequence->list)
   (only-in racket/string string-split string-trim)
+  corpse-reviver/opaque
 )
+
+(require/opaque "_list.rkt" sort*)
 
 ;; =============================================================================
 ;; --- data definition: modulegraph
@@ -225,8 +228,8 @@
   ;; Need to append .rkt, else things like (string< "a-base" "a") fail. They should pass...
   (define (get-key x)
     (string-append (cdar x) ".rkt"))
-  (define sorted (sort
-    adjlist string<? #:key get-key))
+  (define sorted (sort*
+    adjlist string<? get-key))
   (unless (equal? (for/list
                     ([x (in-list sorted)])
                     (caar x))
@@ -237,4 +240,3 @@
     (for/list ([tag+neighbors (in-list sorted)])
       (cons (cdar tag+neighbors) (cdr tag+neighbors))))
   (modulegraph project-name untagged))
-

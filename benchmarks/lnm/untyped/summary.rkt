@@ -32,7 +32,10 @@
     bitstring->natural
     log2
     natural->bitstring)
+  corpse-reviver/opaque
 )
+
+(require/opaque math/statistics mean)
 
 ;; =============================================================================
 ;; -- data definition: summary
@@ -58,7 +61,7 @@
 ;; Create a summary from a raw dataset.
 ;; Infers the location of the module graph if #:graph is not given explicitly
 ;; (: from-rktd (->* [String] [#:graph (U Path #f)] Summary))
-(define (from-rktd filename #:graph [graph-path #f])
+(define (from-rktd filename [graph-path #f])
   (define path (string->path filename))
   (define dataset (rktd->dataset path))
   (define mg (from-tex (or graph-path (infer-graph path))))
@@ -127,7 +130,7 @@
 
 (define (all-variations sm)
   (define M (get-num-modules sm))
-  (stream-map (lambda (n) (natural->bitstring n #:pad M))
+  (stream-map (lambda (n) (natural->bitstring n M))
               (in-range (get-num-variations sm))))
 
 (define (get-module-names sm)
@@ -162,4 +165,3 @@
 
 (define (index->mean-runtime sm i)
   (mean (vector-ref (summary-dataset sm) i)))
-

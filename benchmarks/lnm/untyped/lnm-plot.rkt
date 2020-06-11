@@ -27,12 +27,9 @@
     predicate->variations
     untyped-mean
     variation->mean-runtime)
-  plot/pict
-  (only-in pict pict?)
-  (only-in racket/math exact-floor)
-  (only-in plot/utils linear-seq)
   (only-in racket/math exact-floor exact-ceiling)
   (only-in racket/stream stream-length stream->list stream-filter)
+  "plot-adapted.rkt"
 )
 
 ;; =============================================================================
@@ -51,53 +48,53 @@
 ;; --- plotting
 
 (define (lnm-plot summary
-                  #:L L ;; (U Index (Listof Index)), L-values to plot
-                  #:N [N DEFAULT_N]  ;; Index, recommened N limit
-                  #:M [M DEFAULT_M] ;; Index, recommended M limit
-                  #:max-overhead [xmax DEFAULT_XLIMIT] ;; Index, max. x-value
-                  #:num-samples [num-samples DEFAULT_SAMPLES] ;; Index
-                  #:cutoff-proportion [cutoff-proportion DEFAULT_CUTOFF] ;; Flonum, between 0 and 1.
-                  #:plot-width [width (plot-width)] ;; Index
-                  #:plot-height [height (plot-height)]) ;; Index
+                  L ;; (U Index (Listof Index)), L-values to plot
+                  [N DEFAULT_N]  ;; Index, recommened N limit
+                  [M DEFAULT_M] ;; Index, recommended M limit
+                  [xmax DEFAULT_XLIMIT] ;; Index, max. x-value
+                  [num-samples DEFAULT_SAMPLES] ;; Index
+                  [cutoff-proportion DEFAULT_CUTOFF] ;; Flonum, between 0 and 1.
+                  [width (plot-width)] ;; Index
+                  [height (plot-height)]) ;; Index
   (define L-list (or (and (list? L) L) (list L)))
   (define num-vars (get-num-variations summary))
   (define cutoff-point (* cutoff-proportion num-vars))
   ;; Make renderers for the lines
-  (define N-line (vertical-line N #:y-max num-vars
-                                  #:color 'forestgreen
-                                  #:width THIN))
-  (define M-line (vertical-line M #:y-max num-vars
-                                  #:color 'goldenrod
-                                  #:width THIN))
-  (define cutoff-line (horizontal-line cutoff-point #:x-max xmax
-                                                    #:color 'orangered
-                                                    #:style 'short-dash
-                                                    #:width THICK))
+  (define N-line (vertical-line N num-vars
+                                  'forestgreen
+                                  THIN))
+  (define M-line (vertical-line M num-vars
+                                  'goldenrod
+                                  THIN))
+  (define cutoff-line (horizontal-line cutoff-point xmax
+                                                    'orangered
+                                                    THICK
+                                                    'short-dash))
   ;; Get yticks
-  (define yticks (compute-yticks num-vars 6 #:exact (list cutoff-point)))
+  (define yticks (compute-yticks num-vars 6 (list cutoff-point)))
   ;; Set plot parameters ('globally', for all picts)
   (parameterize (
     [plot-x-ticks (compute-xticks 5)]
-    [plot-y-ticks (compute-yticks num-vars 6 #:exact cutoff-point)]
+    [plot-y-ticks (compute-yticks num-vars 6 cutoff-point)]
     [plot-x-far-ticks no-ticks]
     [plot-y-far-ticks no-ticks]
     [plot-font-face "bold"]
     [plot-font-size 16])
     ;; Create 1 pict for each value of L
     (for/list ([L (in-list L-list)])
-      (define F (function (count-variations summary L #:cache-up-to xmax) 0 xmax
-                          #:samples num-samples
-                          #:color 'navy
-                          #:width THICK))
+      (define F (function (count-variations summary L xmax) 0 xmax
+                          num-samples
+                          'navy
+                          THICK))
       (define res (plot-pict (list N-line M-line cutoff-line F)
-                 #:x-min 0
-                 #:x-max xmax
-                 #:y-min 0
-                 #:y-max num-vars
-                 #:x-label "Overhead (vs. untyped)"
-                 #:y-label "Count"
-                 #:width width
-                 #:height height))
+                 0
+                 xmax
+                 0
+                 num-vars
+                 "Overhead (vs. untyped)"
+                 "Count"
+                 width
+                 height))
       (if (pict? res) res (error 'lnm)))))
 
 ;; Return a function (-> Real Index) on argument `N`
@@ -105,12 +102,12 @@
 ;;  which can reach, in L or fewer steps,
 ;;  a variation with overhead no more than `N`
 ;; (: count-variations (-> Summary Index (-> Real Index)))
-(define (count-variations sm L #:cache-up-to [lim #f])
+(define (count-variations sm L [lim #f])
   (define baseline (untyped-mean sm))
-  (define cache (and lim (cache-init sm lim #:L L)))
+  (define cache (and lim (cache-init sm lim L)))
   (lambda (N-raw)
     (define N (if (>= N-raw 0) N-raw (error 'count-variations)))
-    (define good? (make-variation->good? sm (* N baseline) #:L L))
+    (define good? (make-variation->good? sm (* N baseline) L))
     (if (and cache lim (<= N lim))
         ;; Use cache to save some work, only test the variations
         ;; in the next bucket
@@ -121,7 +118,7 @@
 ;; Make a predicate checking whether a variation is good.
 ;; Good = no more than `L` steps away from a variation
 ;;        with average runtime less than `good-threshold`.
-(define (make-variation->good? summary good-threshold #:L [L 0])
+(define (make-variation->good? summary good-threshold [L 0])
   (lambda (var)
     (for/or ([var2 (cons var (in-reach var L))])
       (< (variation->mean-runtime summary var2)
@@ -131,13 +128,13 @@
 ;; -- cache
 
 ;; Create a cache that saves the configurations between discrete overhead values
-(define (cache-init summary max-overhead #:L [L 0])
+(define (cache-init summary max-overhead [L 0])
   (define base-overhead (untyped-mean summary))
   (define unsorted-variations (box (all-variations summary)))
   ;; For each integer-overhead-range [0, 1] [1, 2] ... [max-1, max]
   ;; save the variations within that overhead to a cache entry
   (for/vector ([i (in-range (add1 max-overhead))])
-    (define good? (make-variation->good? summary (* i base-overhead) #:L L))
+    (define good? (make-variation->good? summary (* i base-overhead) L))
     (define-values (good-vars rest)
       (stream-partition good? (unbox unsorted-variations)))
     (set-box! unsorted-variations rest)
@@ -171,7 +168,7 @@
 ;; Round all numbers down a little, except for numbers in the optional
 ;;  list `exact`.
 ;; TODO
-(define (compute-yticks max-y num-ticks #:exact [exact '()])
+(define (compute-yticks max-y num-ticks [exact '()])
   (define exact-list (or (and (list? exact) exact) (list exact)))
   (define round-y (if (< max-y 1000)
                       round
@@ -197,25 +194,23 @@
              (format "~ax" (pre-tick-value pt))))))
 
 (define (horizontal-line y-val
-                         #:x-min [x-min 0]
-                         #:x-max [x-max 1]
-                         #:color [c 'black]
-                         #:width [w (line-width)]
-                         #:style [s 'solid])
-  (lines (list (list x-min y-val)
+                         [x-max 1]
+                         [c 'black]
+                         [w (line-width)]
+                         [s 'solid])
+  (lines (list (list 0 y-val)
                (list x-max y-val))
-         #:color c
-         #:width w
-         #:style s))
+         c
+         w
+         s))
 
 (define (vertical-line x-val
-                       #:y-min [y-min 0]
-                       #:y-max [y-max 1]
-                       #:color [c 'black]
-                       #:width [w (line-width)]
-                       #:style [s 'solid])
-  (lines (list (list x-val y-min)
+                       [y-max 1]
+                       [c 'black]
+                       [w (line-width)]
+                       [s 'solid])
+  (lines (list (list x-val 0)
                (list x-val y-max))
-         #:color c
-         #:width w
-         #:style s))
+         c
+         w
+         s))

@@ -22,7 +22,7 @@
 )
 (require/typed/check "bitstring.rkt"
   [log2 (-> Index Index)]
-  [natural->bitstring (-> Index #:pad Index String)])
+  [natural->bitstring (-> Index Index String)])
 
 ;; =============================================================================
 
@@ -62,15 +62,15 @@
   (void)
   ;; For each row, print the config ID and all the values
   (for ([(row n) (in-indexed vec)])
-    (void (natural->bitstring (assert n index?) #:pad (log2 num-configs)))
+    (void (natural->bitstring (assert n index?) (log2 num-configs)))
     (for ([v row]) (void "~a~a" sep v))
     (void)))
 
 ;; Print the rktd data stored in file `input-filename` to a spreadsheet.
-(: rktd->spreadsheet (->* (Path-String) (#:output (U Path-String #f) #:format Symbol) Void))
+(: rktd->spreadsheet (->* (Path-String) ((U Path-String #f) Symbol) Void))
 (define (rktd->spreadsheet input-filename
-                             #:output [output #f]
-                             #:format [format 'tab])
+                           [output #f]
+                           [format 'tab])
   (define vec
     (for/vector : (Vectorof (Listof Index)) ((x (in-vector (assert (file->value input-filename) vector?))))
       (listof-index x)))
@@ -85,4 +85,3 @@
            (andmap index? x))
     x
     (error 'listof-index)))
-

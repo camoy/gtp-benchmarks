@@ -21,7 +21,15 @@
   (only-in racket/path file-name-from-path filename-extension)
   (only-in racket/sequence sequence->list)
   (only-in racket/string string-split string-trim)
+  corpse-reviver/opaque
 )
+
+(require/typed/opaque "_list.rkt"
+  [sort* (All (a b)
+           (-> (Listof a)
+               (-> b b Boolean)
+               (U (-> a b) False)
+               (Listof a)))])
 
 ;; =============================================================================
 ;; --- data definition: modulegraph
@@ -239,8 +247,8 @@
   (: get-key (-> (Pairof (Pairof Index String) (Listof String)) String))
   (define (get-key x)
     (string-append (cdar x) ".rkt"))
-  (define sorted ((inst sort (Pairof (Pairof Index String) (Listof String)) String)
-    adjlist string<? #:key get-key))
+  (define sorted ((inst sort* (Pairof (Pairof Index String) (Listof String)) String)
+    adjlist string<? get-key))
   (unless (equal? (for/list : (Listof Index)
                     ([x (in-list sorted)])
                     (caar x))
@@ -252,4 +260,3 @@
     (for/list ([tag+neighbors (in-list sorted)])
       (cons (cdar tag+neighbors) (cdr tag+neighbors))))
   (modulegraph project-name untagged))
-

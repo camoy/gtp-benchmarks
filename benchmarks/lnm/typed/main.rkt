@@ -5,18 +5,18 @@
   "summary-adapted.rkt"
 )
 (require/typed/check "spreadsheet.rkt"
-  [rktd->spreadsheet (-> Path-String #:output Path-String #:format Symbol Void)]
+  [rktd->spreadsheet (-> Path-String Path-String Symbol Void)]
 )
 (require/typed/check "lnm-plot.rkt"
  [lnm-plot (-> Summary
-               #:L (Listof Index)
-               #:N Index
-               #:M Index
-               #:max-overhead Index
-               #:cutoff-proportion Float
-               #:num-samples Positive-Integer
-               #:plot-height Positive-Integer
-               #:plot-width Positive-Integer
+               (Listof Index)
+               Index
+               Index
+               Index
+               Positive-Integer
+               Float
+               Positive-Integer
+               Positive-Integer
                (Listof Any))]
 )
 ;; Just testing
@@ -33,15 +33,15 @@
   ;; Create L-N/M pictures
   (time
     (begin
-      (lnm-plot summary #:L l-list
-                        #:N 3
-                        #:M 10
-                        #:max-overhead 20
-                        #:cutoff-proportion 0.6
-                        #:num-samples NUM_SAMPLES
-                        #:plot-height 300
-                        #:plot-width 400)
-      (rktd->spreadsheet filename #:output "./test-case-output.out" #:format 'tab)
+      (lnm-plot summary l-list
+                        3
+                        10
+                        20
+                        NUM_SAMPLES
+                        0.6
+                        400
+                        300)
+      (rktd->spreadsheet filename "./test-case-output.out" 'tab)
       (void))))
 
 (main "../base/data/snake.rktd")

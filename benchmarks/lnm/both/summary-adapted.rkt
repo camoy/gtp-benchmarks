@@ -10,7 +10,7 @@
     [source : Path-String]
     [dataset : (Vectorof (Listof Index))]
     [modulegraph : ModuleGraph])]
-  [from-rktd (->* [String] [#:graph (U Path #f)] Summary)]
+  [from-rktd (->* [String] [(U Path #f)] Summary)]
   [all-variations (-> Summary (Sequenceof String))]
   [get-num-variations (-> Summary Index)]
   [get-project-name (-> Summary String)]

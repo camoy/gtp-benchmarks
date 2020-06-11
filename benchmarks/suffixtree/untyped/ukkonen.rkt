@@ -5,7 +5,7 @@
 ;; biology.
 
 (require "structs.rkt"
-  "../base/untyped.rkt"
+  "untyped.rkt"
   (except-in "data.rkt" make-label)
   "label.rkt")
 

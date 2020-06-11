@@ -2,7 +2,7 @@
 ;; Some utilities.
 
 (require
- "../base/untyped.rkt"
+ "untyped.rkt"
  (except-in "data.rkt" make-label)
  "label.rkt"
  "structs.rkt"

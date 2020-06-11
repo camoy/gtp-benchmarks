@@ -1,7 +1,7 @@
 #lang racket/base
 
 (require
-  "../base/untyped.rkt"
+  "untyped.rkt"
   (rename-in "data.rkt" [make-label -make-label]))
 ;; Label implementation.  Labels are like strings, but also allow for
 ;; efficient shared slicing.

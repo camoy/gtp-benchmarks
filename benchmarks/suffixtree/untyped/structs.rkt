@@ -1,5 +1,5 @@
 #lang racket/base
-(require "../base/untyped.rkt"
+(require "untyped.rkt"
          racket/list)
 
 (require "label.rkt"

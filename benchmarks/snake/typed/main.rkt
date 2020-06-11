@@ -11,7 +11,7 @@
                      [handle-key (World String . -> . World)]
                      [game-over? (World . -> . Boolean)])
 
-(: replay : World (Listof Any) -> Void)
+(: replay : (-> World (Listof Any) Void))
 (define (replay w0 hist)
   (reset!)
   (let loop ((w : World w0)

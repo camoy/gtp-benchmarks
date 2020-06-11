@@ -10,11 +10,14 @@
   [check-array-shape-size (-> Symbol Indexes Integer)]
   [check-array-shape (-> (Vectorof Integer) (-> Nothing) Indexes)])
 
+(define-values (array? array-shape array-size unsafe-array-proc)
+  (values Array? Array-shape Array-size Array-unsafe-proc))
+
 (provide
- (rename-out (Array? array?))
- (rename-out (Array-shape array-shape))
- (rename-out (Array-size  array-size))
- (rename-out (Array-unsafe-proc unsafe-array-proc))
+ array?
+ array-shape
+ array-size
+ unsafe-array-proc
  array-default-strict!
  array-strict?
  array-strictness

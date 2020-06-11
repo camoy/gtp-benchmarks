@@ -10,11 +10,14 @@
            unsafe-array-index->value-index)
          "data.rkt")
 
+(define-values (array? array-shape array-size unsafe-array-proc)
+  (values Array? Array-shape Array-size Array-unsafe-proc))
+
 (provide
- (rename-out (Array? array?))
- (rename-out (Array-shape array-shape))
- (rename-out (Array-size  array-size))
- (rename-out (Array-unsafe-proc unsafe-array-proc))
+ array?
+ array-shape
+ array-size
+ unsafe-array-proc
  array-default-strict!
  array-strict?
  array-strictness
@@ -251,4 +254,3 @@
   (define proc (make-unsafe-array-proc ds (λ (j) (vector-ref vs j))))
   (define set-proc (make-unsafe-array-set-proc Float ds (λ (j v) (vector-set! vs j v))))
   (Mutable-Array ds (vector-length vs) (box #t) void proc set-proc vs))
-

@@ -75,7 +75,7 @@
 (: rktd->dataset (-> Path (Vectorof (Listof Index))))
 (define (rktd->dataset path)
   ;; Check .rktd
-  (unless (bytes=? #"rktd" (or (filename-extension path) #""))
+  (unless (bytes=? (string->bytes/utf-8 "rktd") (or (filename-extension path) #""))
     (parse-error "Cannot parse dataset '~a', is not .rktd" (path->string path)))
   ;; Get data
   (define vec (file->value path))

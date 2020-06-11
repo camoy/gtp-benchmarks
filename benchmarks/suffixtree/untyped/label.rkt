@@ -179,7 +179,7 @@
 (define (label->string label)
   (define V (label->vector label))
   (define L (for/list
-                      ([c (in-vector V)])
+                      ([c (in-list (vector->list V))])
               (unless (char? c) (error "label->string invariant broken"))
               c))
   (list->string L))

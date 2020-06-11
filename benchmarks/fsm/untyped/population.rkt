@@ -49,7 +49,7 @@
 
 ;; effec: reset all automata in a*
 (define (population-reset a*)
-  (for ([x (in-vector a*)][i (in-naturals)])
+  (for ([x (in-list (vector->list a*))][i (in-naturals)])
     (vector-set! a* i (automaton-reset x))))
 
 ;; -----------------------------------------------------------------------------
@@ -57,7 +57,7 @@
 (define (death-birth population0 rate (q #false))
   (match-define (cons a* b*) population0)
   (define payoffs
-    (for/list  ([x  (in-vector a*)])
+    (for/list  ([x  (in-list (vector->list a*))])
       (automaton-payoff x)))
   [define substitutes (choose-randomly payoffs rate q)]
   (for ([i (in-range rate)][p (in-list substitutes)])
@@ -70,10 +70,10 @@
 
 (define (shuffle-vector b a)
   ;; copy b into a
-  (for ([x (in-vector b)][i (in-naturals)])
+  (for ([x (in-list (vector->list b))][i (in-naturals)])
     (vector-set! a i x))
   ;; now shuffle a 
-  (for ([x (in-vector b)] [i (in-naturals)])
+  (for ([x (in-list (vector->list b))] [i (in-naturals)])
     (define j (random (add1 i)))
     (unless (= j i) (vector-set! a i (vector-ref a j)))
     (vector-set! a j x))

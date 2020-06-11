@@ -2,7 +2,7 @@
 
 (require
   "../base/untyped.rkt"
-  "data.rkt")
+  (rename-in "data.rkt" [make-label -make-label]))
 ;; Label implementation.  Labels are like strings, but also allow for
 ;; efficient shared slicing.
 ;;
@@ -25,7 +25,7 @@
 
 
 (provide
-         (rename-out [ext:make-label make-label])
+         make-label
          label-element?
          label-element-equal?
          string->label
@@ -51,7 +51,7 @@
 
 ;; make-label: label-element -> label
 ;; Constructs a new label from either a string or a vector of things.
-(define (ext:make-label label-element)
+(define (make-label label-element)
   (cond ((string? label-element) (string->label label-element))
         ((vector? label-element) (vector->label label-element))
         (else
@@ -67,7 +67,7 @@
 ;; vector->label vector
 ;; Constructs a new label from the input vector.
 (define (vector->label vector)
-  (make-label (vector->immutable-vector vector)
+  (-make-label (vector->immutable-vector vector)
               0 (vector-length vector)))
 
 
@@ -124,7 +124,7 @@
     ((label i j)
      (unless (<= i j)
        (error 'sublabel "illegal sublabel [~a, ~a]" i j))
-     (make-label (label-datum label)
+     (-make-label (label-datum label)
                  (+ i (label-i label))
                  (+ j (label-i label))))))
 
@@ -213,7 +213,7 @@
 ;; label-copy: label->label
 ;; Returns a copy of the label.
 (define (label-copy label)
-  (make-label (label-datum label) (label-i label) (label-j label)))
+  (-make-label (label-datum label) (label-i label) (label-j label)))
 
 
 ;; label-ref-at-end?: label number -> boolean

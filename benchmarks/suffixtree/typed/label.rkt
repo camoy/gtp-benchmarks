@@ -1,6 +1,6 @@
 #lang typed/racket/base
 
-(require "typed-data.rkt")
+(require (rename-in "typed-data.rkt" [make-label -make-label]))
 
 ;; Label implementation.  Labels are like strings, but also allow for
 ;; efficient shared slicing.
@@ -19,7 +19,7 @@
 (define label-element-equal? equal?)
 
 (provide
-        (rename-out [ext:make-label make-label])
+        make-label
         label-element?
         label-element-equal?
         string->label
@@ -45,8 +45,8 @@
 
 ;;make-label: label-element -> label
 ;;Constructs a new label from either a string or a vector of things.
-(: ext:make-label (-> (U String (Vectorof (U Char Symbol))) Label))
-(define (ext:make-label label-element)
+(: make-label (-> (U String (Vectorof (U Char Symbol))) Label))
+(define (make-label label-element)
  (cond ((string? label-element) (string->label label-element))
        ((vector? label-element) (vector->label label-element))
        (else
@@ -64,8 +64,8 @@
 ;; Constructs a new label from the input vector.
 (: vector->label (-> (Vectorof (U Char Symbol)) label))
 (define (vector->label vector)
-  (make-label (vector->immutable-vector vector)
-              0 (vector-length vector)))
+  (-make-label (vector->immutable-vector vector)
+             0 (vector-length vector)))
 
 
 ;; vector->label vector
@@ -128,7 +128,7 @@
     ((label i j)
      (unless (<= i j)
        (error 'sublabel "illegal sublabel [~a, ~a]" i j))
-     (make-label (label-datum label)
+     (-make-label (label-datum label)
                  (+ i (label-i label))
                  (+ j (label-i label))))))
 
@@ -228,7 +228,7 @@
 ;; Returns a copy of the label.
 (: label-copy (-> label label))
 (define (label-copy label)
-  (make-label (label-datum label) (label-i label) (label-j label)))
+  (-make-label (label-datum label) (label-i label) (label-j label)))
 
 
 ;; label-ref-at-end?: label number -> boolean

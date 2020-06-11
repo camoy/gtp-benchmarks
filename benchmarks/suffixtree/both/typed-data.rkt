@@ -5,6 +5,7 @@
   (struct-out node)
   (struct-out suffix-tree)
   make-label
+  set-label-datum!
   set-label-i!
   set-label-j!
   make-suffix-tree
@@ -20,6 +21,7 @@
   [#:struct label ([datum : (Vectorof (U Char Symbol))]
                    [i : Natural] [j : Natural])]
   [make-label (-> (Vectorof (U Char Symbol)) Natural Natural Label)]
+  [set-label-datum! (-> Label (Vectorof (U Char Symbol)) Void)]
   [set-label-i! (-> Label Natural Void)]
   [set-label-j! (-> Label Natural Void)]
   [#:struct node ([up-label : Label]

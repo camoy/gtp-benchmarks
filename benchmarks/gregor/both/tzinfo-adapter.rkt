@@ -1,8 +1,10 @@
 #lang typed/racket/base
 
+(require corpse-reviver/opaque)
+
 ;; Adapter module for the tzinfo subproject
 
-(require/typed/provide "../base/tzinfo/main.rkt"
+(require/typed/provide/opaque "../base/tzinfo/main.rkt"
   [system-tzid (-> (U tz #f))]
   [#:struct tzgap ([starts-at : Natural]
                    [offset-before : tzoffset]
@@ -18,4 +20,3 @@
 
 (provide tz)
 (define-type tz (U String Integer))
-

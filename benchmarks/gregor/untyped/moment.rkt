@@ -3,13 +3,14 @@
 ;; Moments in time
 
 (require
+ corpse-reviver/opaque
   require-typed-check
   racket/match
   "../base/untyped.rkt"
   "gregor-structs.rkt"
   (only-in racket/math exact-round)
 )
-(require (only-in "../base/tzinfo/main.rkt"
+(require/opaque (only-in "../base/tzinfo/main.rkt"
   system-tzid ;(-> (U tz #f))]
   tzoffset tzoffset? tzoffset-utc-seconds
   local-seconds->tzoffset ;(-> String Integer (U tzoffset tzgap tzoverlap))]

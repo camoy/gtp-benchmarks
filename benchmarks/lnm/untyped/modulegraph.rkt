@@ -25,7 +25,7 @@
   corpse-reviver/opaque
 )
 
-(require/opaque "_list.rkt" sort*)
+(require/opaque (only-in "_list.rkt" sort*))
 
 ;; =============================================================================
 ;; --- data definition: modulegraph

@@ -35,7 +35,7 @@
   corpse-reviver/opaque
 )
 
-(require/opaque math/statistics mean)
+(require/opaque (only-in math/statistics mean))
 
 ;; =============================================================================
 ;; -- data definition: summary

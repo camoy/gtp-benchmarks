@@ -16,7 +16,7 @@
   corpse-reviver/opaque
 )
 
-(require/opaque "_format.rkt" ~r)
+(require/opaque (only-in "_format.rkt" ~r))
 
 ;; =============================================================================
 

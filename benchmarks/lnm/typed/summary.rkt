@@ -25,9 +25,7 @@
   "modulegraph-adapted.rkt"
   corpse-reviver/opaque)
 
-(require/opaque math/statistics
-  [mean (-> (Sequenceof Real)
-            Real)])
+(require/opaque (only-in math/statistics mean))
 
 (require/typed racket/stream
   [stream-map (-> (-> Index String) (Sequenceof Index) (Sequenceof String))]

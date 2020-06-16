@@ -55,13 +55,13 @@
                           (values y m))])
     (+ d
        (exact-truncate
-        (/ 
+        (/
          (- (* 153 m) 457)
          5))
        (* 365 y)
        (exact-floor
         (/ y 4))
-       (- 
+       (-
         (exact-floor
          (/ y 100)))
        (exact-floor
@@ -93,14 +93,15 @@
         [(4) (YMD y 4 dom)]
         [(5) (YMD y 5 dom)]
         [(6) (YMD y 6 dom)]
-        [(7) (YMD y 7 dom)]
-        [(8) (YMD y 8 dom)]
-        [(9) (YMD y 9 dom)]
-        [(10) (YMD y 10 dom)]
-        [(11) (YMD y 11 dom)]
-        [(12) (YMD y 12 dom)]
-        [else (error "jdn->ymd")]))))
-      
+        [else
+         (case m
+           [(7) (YMD y 7 dom)]
+           [(8) (YMD y 8 dom)]
+           [(9) (YMD y 9 dom)]
+           [(10) (YMD y 10 dom)]
+           [(11) (YMD y 11 dom)]
+           [(12) (YMD y 12 dom)]
+           [else (error "jdn->ymd")])]))))
 
 (: jdn->wday (-> Integer (U 0 1 2 3 4 5 6)))
 (define (jdn->wday jdn)
@@ -156,25 +157,29 @@
   (: ny Natural)
   (define ny
     (let ([r (+ y (div (+ m n -1) 12))]) (unless (index? r) (error "ymd-add-months")) r))
-  (: nm Month)
-  (define nm
-    (case (let ([v (mod1 (+ m n) 12)])
+  (define for-case
+    (let ([v (mod1 (+ m n) 12)])
                (if (< v 0)
                    (+ 12 v)
-                   v))
+                   v)))
+  (: nm Month)
+  (define nm
+    (case for-case
       [(1) 1]
       [(2) 2]
       [(3) 3]
       [(4) 4]
       [(5) 5]
       [(6) 6]
-      [(7) 7]
-      [(8) 8]
-      [(9) 9]
-      [(10) 10]
-      [(11) 11]
-      [(12) 12]
-      [else (error "ymd-add-months")]))
+      [else
+       (case for-case
+         [(7) 7]
+         [(8) 8]
+         [(9) 9]
+         [(10) 10]
+         [(11) 11]
+         [(12) 12]
+         [else (error "ymd-add-months")])]))
   (define max-dom (days-in-month ny nm))
   (define nd (if (<= d max-dom) d max-dom))
   (unless (index? nd)
@@ -186,14 +191,15 @@
     [(4) (YMD ny 4 nd)]
     [(5) (YMD ny 5 nd)]
     [(6) (YMD ny 6 nd)]
-    [(7) (YMD ny 7 nd)]
-    [(8) (YMD ny 8 nd)]
-    [(9) (YMD ny 9 nd)]
-    [(10) (YMD ny 10 nd)]
-    [(11) (YMD ny 11 nd)]
-    [(12) (YMD ny 12 nd)]
-    [else (error "ymd-add-months")]))
-  
+    [else
+     (case nm
+       [(7) (YMD ny 7 nd)]
+       [(8) (YMD ny 8 nd)]
+       [(9) (YMD ny 9 nd)]
+       [(10) (YMD ny 10 nd)]
+       [(11) (YMD ny 11 nd)]
+       [(12) (YMD ny 12 nd)]
+       [else (error "ymd-add-months")])]))
 
 (: leap-year? (-> Natural Boolean))
 (define (leap-year? y)
@@ -222,7 +228,7 @@
 (: iso-weeks-in-year (-> Natural (U 52 53)))
 (define (iso-weeks-in-year y)
   (define w (jdn->wday (ymd->jdn (YMD y 1 1))))
-  
+
   (cond [(or (= w 4)
              (and (leap-year? y) (= w  3)))
          53]

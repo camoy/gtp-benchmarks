@@ -14,7 +14,7 @@
 ;; -----------------------------------------------------------------------------
 
 (require
- require-typed-check
+ corpse-reviver/require-typed-check
  typed/racket/class
  "../base/cell-types.rkt"
 )

@@ -6,7 +6,7 @@
  main)
 
 (require
-  require-typed-check
+  corpse-reviver/require-typed-check
   racket/class
   "../base/untyped.rkt"
 )

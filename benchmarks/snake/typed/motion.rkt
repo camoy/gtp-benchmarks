@@ -1,6 +1,6 @@
 #lang typed/racket
 
-(require require-typed-check
+(require corpse-reviver/require-typed-check
          "data-adaptor.rkt")
 
 (require/typed/check "const.rkt"

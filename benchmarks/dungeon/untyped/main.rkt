@@ -3,7 +3,7 @@
 ;; -----------------------------------------------------------------------------
 
 (require
-  require-typed-check
+  corpse-reviver/require-typed-check
   racket/class
   "../base/un-types.rkt"
   racket/match

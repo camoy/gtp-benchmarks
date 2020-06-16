@@ -22,7 +22,7 @@
 ;;; Code:
 
 (require
-  require-typed-check
+  corpse-reviver/require-typed-check
   "../base/typedefs.rkt"
   (only-in "../base/math/array.rkt" Array)
   (only-in racket/file file->bytes))

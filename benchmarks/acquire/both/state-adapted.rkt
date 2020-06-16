@@ -7,7 +7,7 @@
 ;; including a data structure for internalizing the state of the players
 
 (require
- require-typed-check
+ corpse-reviver/require-typed-check
  "board-adapted.rkt"
  "../base/types.rkt"
  typed/racket/class)

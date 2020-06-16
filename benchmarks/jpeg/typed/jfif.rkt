@@ -23,7 +23,7 @@
 
 (require
   "../base/typedefs.rkt"
-  require-typed-check
+  corpse-reviver/require-typed-check
   (only-in "../base/math/array.rkt"
     Array
     for/array

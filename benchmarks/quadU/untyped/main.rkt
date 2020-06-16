@@ -3,7 +3,7 @@
 ;; -----------------------------------------------------------------------------
 
 (require
- require-typed-check
+ corpse-reviver/require-typed-check
  "../base/core.rkt"
  (only-in typed/racket/class new send))
 

@@ -90,7 +90,7 @@
 ;; ---------------------------------------------------------------------------------------------------
 
 (require
- require-typed-check
+ corpse-reviver/require-typed-check
  "../base/types.rkt"
 )
 (require/typed/check "auxiliaries.rkt"

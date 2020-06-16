@@ -1,7 +1,7 @@
 #lang typed/racket/base
 
 (require
-  require-typed-check
+  corpse-reviver/require-typed-check
 )
 
 (require/typed/check "structs.rkt"

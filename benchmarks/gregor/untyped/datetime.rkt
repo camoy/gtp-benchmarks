@@ -4,7 +4,7 @@
 ;; (i.e. dates and times at the same time)
 
 (require
-  require-typed-check
+  corpse-reviver/require-typed-check
   racket/match
   "../base/untyped.rkt"
   "core-structs.rkt"

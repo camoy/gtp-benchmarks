@@ -7,7 +7,7 @@
  zo-read
  init)
 
-(require require-typed-check
+(require corpse-reviver/require-typed-check
          (only-in racket/string string-split string-join string-trim)
          racket/match)
 

@@ -11,7 +11,7 @@
 )
 
 ;; =============================================================================
-(require require-typed-check
+(require corpse-reviver/require-typed-check
  "automata.rkt"
  "utilities.rkt"
 )

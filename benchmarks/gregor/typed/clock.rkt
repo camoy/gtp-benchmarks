@@ -19,7 +19,7 @@
 ;; -----------------------------------------------------------------------------
 
 (require
-  require-typed-check
+  corpse-reviver/require-typed-check
   "../base/types.rkt"
   "tzinfo-adapter.rkt"
   "gregor-adapter.rkt"

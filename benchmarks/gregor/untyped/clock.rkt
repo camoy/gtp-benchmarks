@@ -25,7 +25,7 @@
 ;; -----------------------------------------------------------------------------
 
 (require
-  require-typed-check
+  corpse-reviver/require-typed-check
   "../base/untyped.rkt"
   "gregor-structs.rkt"
 )

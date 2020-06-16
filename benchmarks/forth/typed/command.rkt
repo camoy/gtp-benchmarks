@@ -8,7 +8,7 @@
 ;; -----------------------------------------------------------------------------
 
 (require
- require-typed-check
+ corpse-reviver/require-typed-check
  racket/match
  typed/racket/class
  "../base/command-types.rkt"

@@ -1,5 +1,5 @@
 #lang typed/racket/base
-(require require-typed-check
+(require corpse-reviver/require-typed-check
          (except-in "typed-data.rkt" make-label)
          racket/list)
 

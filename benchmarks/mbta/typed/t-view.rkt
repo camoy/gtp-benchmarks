@@ -10,7 +10,7 @@
  manage%)
 
 ;; ===================================================================================================
-(require require-typed-check)
+(require corpse-reviver/require-typed-check)
 (require "../base/t-view-types.rkt") ;; for exporting manage% and Manage
 (require "../base/t-graph-types.rkt")
 (require/typed/check "t-graph.rkt" [read-t-graph (-> [Instance MBTA])])

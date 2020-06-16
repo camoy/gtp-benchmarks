@@ -13,7 +13,7 @@
 ;; ---------------------------------------------------------------------------------------------------
 
 (require
- require-typed-check
+ corpse-reviver/require-typed-check
  "../base/types.rkt"
  "board-adapted.rkt"
  "state-adapted.rkt"

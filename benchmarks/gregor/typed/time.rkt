@@ -21,7 +21,7 @@
 
 (require
  corpse-reviver/opaque
-  require-typed-check
+  corpse-reviver/require-typed-check
   "core-adapter.rkt"
   "gregor-adapter.rkt"
   racket/match)

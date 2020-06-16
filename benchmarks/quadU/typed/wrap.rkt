@@ -12,7 +12,7 @@
 ;; -----------------------------------------------------------------------------
 
 (require
-  require-typed-check
+  corpse-reviver/require-typed-check
   "../base/quad-types.rkt"
   "ocm-struct-adapted.rkt"
   "penalty-struct-adapted.rkt"

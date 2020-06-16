@@ -6,7 +6,7 @@
 )
 (require
   "automata-adapted.rkt"
-  require-typed-check)
+  corpse-reviver/require-typed-check)
 
 (require/typed/check "population.rkt"
  (build-random-population

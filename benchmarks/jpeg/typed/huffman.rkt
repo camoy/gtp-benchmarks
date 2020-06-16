@@ -21,7 +21,7 @@
 ;;
 ;;; Code:
 
-(require require-typed-check)
+(require corpse-reviver/require-typed-check)
 
 (require "../base/typedefs.rkt")
 

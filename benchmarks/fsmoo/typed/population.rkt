@@ -4,7 +4,7 @@
 
 (require
   "automata-adapted.rkt"
-  require-typed-check)
+  corpse-reviver/require-typed-check)
 (require/typed/check "utilities.rkt"
  (choose-randomly
   (-> [Listof Probability] Natural [#:random (U False Real)] [Listof Natural])))

@@ -7,7 +7,7 @@
 ;; ----------------------------------------------------------------------------
 
 (require
-  require-typed-check
+  corpse-reviver/require-typed-check
   (only-in racket/list append* empty empty? split-at drop-right)
   typed/racket/class
   (only-in racket/sequence sequence->list)

@@ -21,7 +21,7 @@
 ;; -----------------------------------------------------------------------------
 
 (require
-  require-typed-check
+  corpse-reviver/require-typed-check
 )
 
 (require/typed/check "ocm-struct.rkt"

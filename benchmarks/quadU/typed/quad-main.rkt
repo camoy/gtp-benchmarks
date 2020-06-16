@@ -7,7 +7,7 @@
 ;; ----------------------------------------------------------------------------
 
 (require
-  require-typed-check
+  corpse-reviver/require-typed-check
   "../base/quad-types.rkt"
   racket/class
   (only-in racket/list append* split-at drop-right)

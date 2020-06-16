@@ -13,7 +13,7 @@
 
 (require
  corpse-reviver/opaque
-  require-typed-check
+  corpse-reviver/require-typed-check
   racket/match
   "gregor-adapter.rkt"
 )

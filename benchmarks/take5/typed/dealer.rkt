@@ -16,7 +16,7 @@
   "deck-types.rkt"
   "player-types.rkt"
   racket/list
-  require-typed-check
+  corpse-reviver/require-typed-check
   typed/racket/class)
 
 (require/typed/check "basics.rkt"

@@ -50,7 +50,7 @@
 ;; -----------------------------------------------------------------------------
 
 (require
- require-typed-check
+ corpse-reviver/require-typed-check
  "../base/quad-types.rkt"
  (only-in racket/string string-append*))
 

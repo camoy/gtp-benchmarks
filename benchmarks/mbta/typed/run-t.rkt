@@ -15,7 +15,7 @@
  run-t)
 
 ;; ===================================================================================================
-(require require-typed-check)
+(require corpse-reviver/require-typed-check)
 (require/typed/check "t-view.rkt" [manage% Manage])
 (require "../base/t-view-types.rkt")
 

@@ -21,7 +21,7 @@
 
 (require
  corpse-reviver/opaque
-  require-typed-check
+  corpse-reviver/require-typed-check
   "core-structs.rkt"
   "gregor-structs.rkt"
   racket/match)

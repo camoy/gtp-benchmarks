@@ -7,7 +7,7 @@
 )
 
 (require
-  require-typed-check
+  corpse-reviver/require-typed-check
   (for-syntax racket/sequence racket/base syntax/parse racket/syntax)
   "image-adapted.rkt"
 )

@@ -7,7 +7,7 @@
  make-random-automaton
 )
 
-(require require-typed-check)
+(require corpse-reviver/require-typed-check)
 (require/typed/check "automata.rkt"
  (make-random-automaton
   (-> Natural oAutomaton)))

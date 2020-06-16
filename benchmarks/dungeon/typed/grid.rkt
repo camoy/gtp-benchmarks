@@ -15,7 +15,7 @@
 
 (require
   "../base/cell-types.rkt"
-  require-typed-check
+  corpse-reviver/require-typed-check
   ;math/array ;; TODO it'd be nice to use this
 )
 (require/typed/check "cell.rkt"

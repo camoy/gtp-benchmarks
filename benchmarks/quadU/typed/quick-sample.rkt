@@ -5,7 +5,7 @@
 ;; -----------------------------------------------------------------------------
 
 (require
-  require-typed-check
+  corpse-reviver/require-typed-check
   racket/file
   "../base/quad-types.rkt"
 )

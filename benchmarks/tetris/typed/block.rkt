@@ -1,7 +1,7 @@
 #lang typed/racket
 
 (require "base-types.rkt")
-(require require-typed-check)
+(require corpse-reviver/require-typed-check)
 (require/typed/check "data.rkt"
                      [posn=? (-> Posn Posn Boolean)])
 

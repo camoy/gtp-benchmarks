@@ -6,7 +6,7 @@
 ;; -----------------------------------------------------------------------------
 
 (require
-  require-typed-check
+  corpse-reviver/require-typed-check
   racket/list
   typed/racket/class
   "board-adapted.rkt"

@@ -1,6 +1,6 @@
 #lang typed/racket/base
 
-(require require-typed-check)
+(require corpse-reviver/require-typed-check)
 
 (require/typed/check "streams.rkt"
   [#:struct stream ([first : Natural]

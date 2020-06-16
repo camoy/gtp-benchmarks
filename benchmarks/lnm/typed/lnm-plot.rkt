@@ -16,7 +16,7 @@
 ;; -----------------------------------------------------------------------------
 
 (require
-  require-typed-check
+  corpse-reviver/require-typed-check
   "summary-adapted.rkt"
   "plot-adapted.rkt"
   (only-in racket/math exact-floor)

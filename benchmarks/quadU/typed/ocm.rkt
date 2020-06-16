@@ -10,7 +10,7 @@
 ;; -----------------------------------------------------------------------------
 
 (require
- require-typed-check
+ corpse-reviver/require-typed-check
  "ocm-struct-adapted.rkt"
  (only-in racket/list argmin)
  (only-in racket/sequence sequence->list)

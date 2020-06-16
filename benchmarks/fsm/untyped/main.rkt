@@ -4,7 +4,7 @@
 (random-seed 7480)
 
 ;; =============================================================================
-(require require-typed-check
+(require corpse-reviver/require-typed-check
  "../base/untyped.rkt"
  "automata.rkt"
  "population.rkt"

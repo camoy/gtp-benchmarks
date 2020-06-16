@@ -8,7 +8,7 @@
 (require
   "automata-adapted.rkt"
   "population-adapted.rkt"
-  require-typed-check
+  corpse-reviver/require-typed-check
 )
 (require/typed/check "utilities.rkt"
  (relative-average (-> [Listof Real] Real Real))

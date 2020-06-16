@@ -12,7 +12,7 @@
 ;; -----------------------------------------------------------------------------
 
 (require
-  require-typed-check
+  corpse-reviver/require-typed-check
   "../base/untyped.rkt"
   "../base/core.rkt"
   "ocm-struct.rkt"

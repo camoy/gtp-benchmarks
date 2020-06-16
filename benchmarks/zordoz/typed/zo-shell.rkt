@@ -8,7 +8,7 @@
  init)
 
 (require corpse-reviver/opaque
-         require-typed-check
+         corpse-reviver/require-typed-check
          (only-in racket/string string-split string-join string-trim)
          "typed-zo-structs.rkt"
          racket/match)

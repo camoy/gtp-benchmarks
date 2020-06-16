@@ -50,7 +50,7 @@
 ;; -----------------------------------------------------------------------------
 
 (require
- require-typed-check
+ corpse-reviver/require-typed-check
  "../base/core.rkt"
  "../base/untyped.rkt"
  (only-in racket/string string-append*))

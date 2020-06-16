@@ -21,7 +21,7 @@
   "basics-types.rkt"
   "card-pool-types.rkt"
   typed/racket/class
-  require-typed-check
+  corpse-reviver/require-typed-check
   (only-in racket/list shuffle first rest))
 
 (require/typed/check "basics.rkt"

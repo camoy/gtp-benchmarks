@@ -1,7 +1,7 @@
 #lang racket/base
 
 (require
-  require-typed-check
+  corpse-reviver/require-typed-check
   "gregor-structs.rkt"
 )
 

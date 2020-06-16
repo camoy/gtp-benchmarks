@@ -10,7 +10,7 @@
 
 (require
   racket/list
-  require-typed-check
+  corpse-reviver/require-typed-check
   racket/class)
 (require "card.rkt")
 (require (only-in "basics.rkt"

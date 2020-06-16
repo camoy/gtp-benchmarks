@@ -25,7 +25,7 @@
   "../base/untyped.rkt"
   "core-structs.rkt"
   "gregor-structs.rkt"
-  require-typed-check
+  corpse-reviver/require-typed-check
   racket/match)
 
 (require (only-in

@@ -1,7 +1,7 @@
 #lang typed/racket/base
 
 (require
-  require-typed-check
+  corpse-reviver/require-typed-check
   "../base/command-types.rkt")
 (require/typed/check "eval.rkt"
   (forth-eval* (-> (Listof String) (Values Any Any)))

@@ -12,7 +12,7 @@
 
 (require (only-in racket/list empty?)
          (only-in racket/string string-split string-trim)
-         require-typed-check
+         corpse-reviver/require-typed-check
          racket/match)
 
 (require "zo-transition.rkt"

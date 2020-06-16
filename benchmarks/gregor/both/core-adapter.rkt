@@ -8,7 +8,7 @@
   Month)
 
 (require
-  require-typed-check
+  corpse-reviver/require-typed-check
   "../base/types.rkt")
 
 (require/typed/check "core-structs.rkt"

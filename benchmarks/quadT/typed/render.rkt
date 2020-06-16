@@ -5,7 +5,7 @@
 ;; -----------------------------------------------------------------------------
 
 (require
- require-typed-check
+ corpse-reviver/require-typed-check
  "../base/core-types.rkt"
  "../base/quad-types.rkt"
  (only-in racket/list filter-not)

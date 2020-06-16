@@ -22,7 +22,7 @@
 
 (require
  corpse-reviver/opaque
-  require-typed-check
+  corpse-reviver/require-typed-check
   (only-in racket/math exact-round)
   "core-adapter.rkt"
   "gregor-adapter.rkt"

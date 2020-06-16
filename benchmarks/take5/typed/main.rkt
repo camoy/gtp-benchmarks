@@ -6,7 +6,7 @@
  main)
 
 (require
-  require-typed-check
+  corpse-reviver/require-typed-check
   typed/racket/class
   "player-types.rkt"
   "dealer-types.rkt"

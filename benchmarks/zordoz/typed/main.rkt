@@ -1,6 +1,6 @@
 #lang typed/racket/base
 
-(require require-typed-check
+(require corpse-reviver/require-typed-check
          "typed-zo-structs.rkt")
 
 (require/typed/check "zo-shell.rkt"

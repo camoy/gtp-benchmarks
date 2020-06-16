@@ -1,7 +1,7 @@
 #lang typed/racket/base
 
 (require require-typed-check
-         "../base/typed-zo-structs.rkt")
+         "typed-zo-structs.rkt")
 
 (require/typed/check "zo-shell.rkt"
   [zo-read (-> Path-String zo)]

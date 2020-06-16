@@ -22,8 +22,8 @@
                [#:struct (prefix zo) (
                  [num-lifts : Exact-Nonnegative-Integer] 
                  [toplevels : (Listof (U #f Symbol global-bucket module-variable))] 
-                 [src-inspector-desc : Symbol]
-                 [stxs : (Listof (U #f stx))])]
+                 [stxs : (Listof (U #f stx))]
+                 [src-inspector-desc : Symbol])]
                [#:struct (global-bucket zo) ([name : Symbol])]
                [#:struct (module-variable zo) (
                  [modidx : Module-Path-Index] 

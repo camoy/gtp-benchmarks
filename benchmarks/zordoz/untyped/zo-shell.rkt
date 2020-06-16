@@ -11,11 +11,13 @@
          (only-in racket/string string-split string-join string-trim)
          racket/match)
 
-(require "zo-string.rkt"
+(require corpse-reviver/opaque
+ "zo-string.rkt"
  "zo-transition.rkt"
  "zo-find.rkt"
- "../base/untyped.rkt"
- "../base/compiler-zo-parse.rkt")
+ "untyped.rkt")
+
+(require/opaque "_compiler-zo-parse.rkt")
 
 ;; -----------------------------------------------------------------------------
 

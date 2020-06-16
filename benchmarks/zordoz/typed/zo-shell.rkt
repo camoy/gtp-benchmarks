@@ -7,9 +7,10 @@
  zo-read
  init)
 
-(require require-typed-check
+(require corpse-reviver/opaque
+         require-typed-check
          (only-in racket/string string-split string-join string-trim)
-         "../base/typed-zo-structs.rkt"
+         "typed-zo-structs.rkt"
          racket/match)
 
 (require/typed/check "zo-string.rkt"
@@ -21,8 +22,8 @@
   [zo-find (-> zo String [#:limit (U Natural #f)] (Listof result))]
   [#:struct result ([zo : zo]
                     [path : (Listof zo)])])
-(require/typed "../base/compiler-zo-parse.rkt"
-               [zo-parse (->* () (Input-Port) zo)])
+(require/typed/opaque "_compiler-zo-parse.rkt"
+                      [zo-parse (->* () (Input-Port) zo)])
 
 ;; -----------------------------------------------------------------------------
 

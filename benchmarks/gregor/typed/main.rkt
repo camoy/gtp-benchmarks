@@ -27,7 +27,7 @@
 )
 (require/typed/check "moment.rkt"
     [current-timezone (Parameterof (U tz #f))]
-    [moment (->* (Natural) (Month Natural Natural Natural Natural Natural #:tz (U tz #f) #:resolve-offset (-> (U tzgap tzoverlap) DateTime (U String #f) (U #f Moment) Moment)) Moment)]
+    [moment (->* (Natural) (Month Natural Natural Natural Natural Natural (U tz #f) (-> (U tzgap tzoverlap) DateTime (U String #f) (U #f Moment) Moment)) Moment)]
     [moment=? (-> Moment Moment Boolean)]
     [UTC String]
     [moment->iso8601/tzid (-> Moment String)]
@@ -36,11 +36,11 @@
 (require/typed/check "clock.rkt"
     [current-clock (Parameterof (-> Exact-Rational))]
     [today/utc (-> Date)]
-    [today (->* () (#:tz (U tz #f)) Date)]
+    [today (->* () ((U tz #f)) Date)]
     [current-time/utc (-> Time)]
-    [current-time (->* () (#:tz (U tz #f)) Time)]
+    [current-time (->* () ((U tz #f)) Time)]
     [now/utc (-> DateTime)]
-    [now (->* () (#:tz (U tz #f)) DateTime)]
+    [now (->* () ((U tz #f)) DateTime)]
     [now/moment/utc (-> Moment)]
     [now/moment (-> Moment)]
 )
@@ -106,16 +106,16 @@
   (parameterize ([current-clock (lambda () 1)])
    ;; -- today
    (unless (date=? (today/utc) (date 1970)) (error "test1"))
-   (unless (date=? (today #:tz "America/Chicago") (date 1969 12 31)) (error "test2"))
+   (unless (date=? (today "America/Chicago") (date 1969 12 31)) (error "test2"))
    ;; -- current-time
    (unless (time=? (current-time/utc) (make-time 0 0 1)) (error "test 3"))
-   (unless (time=? (current-time #:tz "America/Chicago") (make-time 18 0 1)) (error "test4"))
+   (unless (time=? (current-time "America/Chicago") (make-time 18 0 1)) (error "test4"))
    ;; -- now
    (unless (datetime=? (now/utc) (datetime 1970 1 1 0 0 1)) (error "test5"))
-   (unless (datetime=? (now #:tz "America/Chicago") (datetime 1969 12 31 18 0 1)) (error "test6"))
+   (unless (datetime=? (now "America/Chicago") (datetime 1969 12 31 18 0 1)) (error "test6"))
 
    ;; -- "moment"
-   (unless (moment=? (now/moment/utc) (moment 1970 1 1 0 0 1 #:tz UTC)) (error "test7"))
+   (unless (moment=? (now/moment/utc) (moment 1970 1 1 0 0 1 0 UTC)) (error "test7"))
    ;; 2015-04-25: Can't type check! Need help
    ;; (unless (moment=? (now/moment #:tz "America/Chicago")
    ;;  (moment 1969 12 31 18 0 1 0 #:tz "America/Chicago")) (error "test8"))

@@ -86,8 +86,8 @@
 ;                          )
 ;                          Moment))
 (define (moment year [month 1] [day 1] [hour 0] [minute 0] [second 0] [nano 0]
-                #:tz [tz (current-timezone)]
-                #:resolve-offset [resolve resolve-offset/raise])
+                [tz (current-timezone)]
+                [resolve resolve-offset/raise])
   (when (eq? tz #f) (error "no timezone"))
   (datetime+tz->moment (datetime year month day hour minute second nano) tz resolve))
 
@@ -169,7 +169,7 @@
 ;(: timezone-coerce (->* [Moment (U Natural String)]
 ;                        (#:resolve-offset (-> (U tzgap tzoverlap) DateTime (U String #f) (U #f Moment) Moment))
 ;                        Moment))
-(define (timezone-coerce m z #:resolve-offset [resolve resolve-offset/raise])
+(define (timezone-coerce m z [resolve resolve-offset/raise])
   (datetime+tz->moment (moment->datetime/local m) z resolve))
 
 ;(: moment=? (-> Moment Moment Boolean))
@@ -186,4 +186,3 @@
 
 ;(: UTC String)
 (define UTC "Etc/UTC")
-

@@ -29,7 +29,7 @@
     [posix->moment (-> Exact-Rational tz Moment)]
     [moment->datetime/local (-> Moment DateTime)]
     [UTC String]
-    [moment (->* (Natural) (Month Natural Natural Natural Natural Natural #:tz (U tz #f) #:resolve-offset (-> (U tzgap tzoverlap) DateTime (U String #f) (U #f Moment) Moment)) Moment)]
+    [moment (->* (Natural) (Month Natural Natural Natural Natural Natural (U tz #f) (-> (U tzgap tzoverlap) DateTime (U String #f) (U #f Moment) Moment)) Moment)]
     [moment=? (-> Moment Moment Boolean)]
     [moment->iso8601 (-> Moment String)]
     [moment->iso8601/tzid (-> Moment String)]
@@ -41,41 +41,41 @@
 
 ;; =============================================================================
 
-(: now/moment (->* () (#:tz (U tz #f)) Moment))
-(define (now/moment #:tz [tz (current-timezone)])
+(: now/moment (->* () ((U tz #f)) Moment))
+(define (now/moment [tz (current-timezone)])
   (unless tz (error "current-timezone is #f"))
   (posix->moment ((current-clock)) tz))
 
 (: now/moment/utc (-> Moment))
 (define (now/moment/utc)
-  (now/moment #:tz "Etc/UTC"))
+  (now/moment "Etc/UTC"))
 
-(: now (->* () (#:tz (U tz #f)) DateTime))
-(define (now #:tz [tz (current-timezone)])
+(: now (->* () ((U tz #f)) DateTime))
+(define (now [tz (current-timezone)])
   (unless tz (error "now: current-timezone is #f"))
-  (moment->datetime/local (now/moment #:tz tz)))
+  (moment->datetime/local (now/moment tz)))
 
 (: now/utc (-> DateTime))
 (define (now/utc)
-  (now #:tz "Etc/UTC"))
+  (now "Etc/UTC"))
 
-(: today (->* () (#:tz (U tz #f)) Date))
-(define (today #:tz [tz (current-timezone)])
+(: today (->* () ((U tz #f)) Date))
+(define (today [tz (current-timezone)])
   (unless tz (error "today: current-timezone is #f"))
-  (datetime->date (now #:tz tz)))
+  (datetime->date (now tz)))
 
 (: today/utc (-> Date))
 (define (today/utc)
-  (today #:tz "Etc/UTC"))
+  (today "Etc/UTC"))
 
-(: current-time (->* () (#:tz (U tz #f)) Time))
-(define (current-time #:tz [tz (current-timezone)])
+(: current-time (->* () ((U tz #f)) Time))
+(define (current-time [tz (current-timezone)])
   (unless tz (error "current-time:  current-timezone is #f"))
-  (datetime->time (now #:tz tz)))
+  (datetime->time (now tz)))
 
 (: current-time/utc (-> Time))
 (define (current-time/utc)
-  (current-time #:tz "Etc/UTC"))
+  (current-time "Etc/UTC"))
 
 (: current-posix-seconds (-> Natural))
 (define (current-posix-seconds)
@@ -85,4 +85,3 @@
 
 (: current-clock (Parameterof (-> Exact-Rational)))
 (define current-clock (make-parameter current-posix-seconds))
-

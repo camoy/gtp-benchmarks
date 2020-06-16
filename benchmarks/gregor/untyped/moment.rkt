@@ -9,13 +9,8 @@
   "../base/untyped.rkt"
   "gregor-structs.rkt"
   (only-in racket/math exact-round)
+  "tzinfo-adapter.rkt"
 )
-(require/opaque (only-in "../base/tzinfo/main.rkt"
-  system-tzid ;(-> (U tz #f))]
-  tzoffset tzoffset? tzoffset-utc-seconds
-  local-seconds->tzoffset ;(-> String Integer (U tzoffset tzgap tzoverlap))]
-  utc-seconds->tzoffset ;(-> String Exact-Rational tzoffset)]
-))
 (require (only-in "hmsn.rkt"
     NS/SECOND ;Natural]
 ))

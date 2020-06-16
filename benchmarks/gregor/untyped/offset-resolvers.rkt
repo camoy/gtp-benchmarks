@@ -7,8 +7,8 @@
   require-typed-check
   "core-structs.rkt"
   "gregor-structs.rkt"
-  racket/match)
-(require/opaque "../base/tzinfo/main.rkt")
+  racket/match
+  "tzinfo-adapter.rkt")
 (require (only-in "hmsn.rkt"
     NS/SECOND ;Natural]
 ))

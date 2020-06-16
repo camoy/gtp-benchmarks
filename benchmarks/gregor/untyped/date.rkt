@@ -21,11 +21,11 @@
 ;; -----------------------------------------------------------------------------
 
 (require
+ corpse-reviver/opaque
   "../base/untyped.rkt"
   "core-structs.rkt"
   "gregor-structs.rkt"
   require-typed-check
-  (only-in racket/format ~r)
   racket/match)
 
 (require (only-in
@@ -36,6 +36,8 @@
     ymd->yday ;(-> YMD Natural)]
     iso-weeks-in-year ;(-> Natural (U 52 53))]
 ))
+
+(require/opaque "_format.rkt")
 
 ;; =============================================================================
 
@@ -104,8 +106,8 @@
 ;(: date->iso8601 (-> Date String))
 (define (date->iso8601 d)
   ;(: f (-> Integer Natural String))
-  (define (f n len) (~r n #:min-width len #:pad-string "0"))
-  
+  (define (f n len) (~r n len "0"))
+
   (match (Date-ymd d)
     [(YMD y m d) (format "~a-~a-~a" (f y 4) (f m 2) (f d 2))]))
 
@@ -116,4 +118,3 @@
 ;(: date<=? (-> Date Date Boolean))
 (define (date<=? d1 d2)
   (<= (date->jdn d1) (date->jdn d2)))
-

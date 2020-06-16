@@ -20,8 +20,8 @@
 ;; -----------------------------------------------------------------------------
 
 (require
+ corpse-reviver/opaque
   require-typed-check
-  (only-in racket/format ~r)
   "core-structs.rkt"
   "gregor-structs.rkt"
   racket/match)
@@ -30,7 +30,9 @@
     hmsn->day-ns ;(-> HMSN Natural)]
     day-ns->hmsn ;(-> Natural HMSN)]
     NS/SECOND ;Natural]
-))
+    ))
+
+(require/opaque "_format.rkt")
 
 ;; =============================================================================
 
@@ -67,13 +69,13 @@
 ;(: time->iso8601 (-> Time String))
 (define (time->iso8601 t)
   ;(: f (-> Integer Natural String))
-  (define (f n l) (~r n #:min-width l #:pad-string "0"))
-  
+  (define (f n l) (~r n l "0"))
+
   (match-define (HMSN h m s n) (time->hmsn t))
   (define fsec (+ s (/ n NS/SECOND)))
   (define pad (if (>= s 10) "" "0"))
 
-  (format "~a:~a:~a~a" (f h 2) (f m 2) pad (~r fsec #:precision 9)))
+  (format "~a:~a:~a~a" (f h 2) (f m 2) pad (~r* fsec 9)))
 
 ;(: time=? (-> Time Time Boolean))
 (define (time=? t1 t2)
@@ -86,4 +88,3 @@
 ;(: time<? (-> Time Time Boolean))
 (define (time<? t1 t2)
   (< (time->ns t1) (time->ns t2)))
-

@@ -21,9 +21,9 @@
 ;; -----------------------------------------------------------------------------
 
 (require
+ corpse-reviver/opaque
   require-typed-check
   (only-in racket/math exact-round)
-  (only-in racket/format ~r)
   "core-adapter.rkt"
   "gregor-adapter.rkt"
   racket/match)
@@ -35,7 +35,13 @@
     [jdn->iso-wday (-> Integer (U 1 2 3 4 5 6 7))]
     [ymd->yday (-> YMD Natural)]
     [iso-weeks-in-year (-> Natural (U 52 53))]
-)
+    )
+
+(require/typed/opaque "_format.rkt"
+  [~r (-> Exact-Rational
+          Nonnegative-Integer
+          String
+          String)])
 
 ;; =============================================================================
 
@@ -55,10 +61,10 @@
 ;;   [(define equal-proc date-equal-proc)
 ;;    (define hash-proc  date-hash-proc)
 ;;    (define hash2-proc date-hash-proc)]
-  
+
 ;;   #:methods gen:custom-write
 ;;   [(define write-proc date-write-proc)]
-  
+
 ;;   #:property prop:serializable
 ;;   (make-serialize-info (λ (d) (vector (date->jdn d)))
 ;;                        #'deserialize-info:Date
@@ -119,8 +125,8 @@
 (: date->iso8601 (-> Date String))
 (define (date->iso8601 d)
   (: f (-> Integer Natural String))
-  (define (f n len) (~r n #:min-width len #:pad-string "0"))
-  
+  (define (f n len) (~r n len "0"))
+
   (match (Date-ymd d)
     [(YMD y m d) (format "~a-~a-~a" (f y 4) (f m 2) (f d 2))]))
 
@@ -131,4 +137,3 @@
 (: date<=? (-> Date Date Boolean))
 (define (date<=? d1 d2)
   (<= (date->jdn d1) (date->jdn d2)))
-

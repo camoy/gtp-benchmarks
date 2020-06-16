@@ -343,7 +343,7 @@
     [(cons x _)
      (define z (if (result? x) (result-zo x) x))
      (printf "~a[~a]\n"
-             (zo->string z #:deep? #f)
+             (zo->string z #f)
              (length ctx))]
     [_
      (error 'zo-shell:info (format "Unknown context '~a'"  ctx))]))
@@ -408,9 +408,9 @@
                  [c2 (in-string prefix)])
          (char=? c1 c2))))
 
-(define (find-all ctx args #:limit [lim #f])
+(define (find-all ctx args [lim #f])
   (for ([arg (in-list args)])
-    (void (length (zo-find ctx arg #:limit lim))))
+    (void (length (zo-find ctx arg lim))))
   (void))
 
 ;; Split the string `raw` by whitespace and
@@ -431,4 +431,3 @@
   (for/or ([str (in-vector v)])
     (and (< 0 (string-length str))
          (eq? #\- (string-ref str 0)))))
-

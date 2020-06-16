@@ -440,9 +440,10 @@
   ;; (-> string? string? boolean?)
   (and (<= (string-length prefix)
            (string-length str))
-       (for/and ([c1 (in-string str)]
-                 [c2 (in-string prefix)])
-         (char=? c1 c2))))
+       (for/and ([i1 (in-range (string-length str))]
+                 [i2 (in-range (string-length prefix))])
+         (char=? (string-ref str i1)
+                 (string-ref prefix i2)))))
 
 (: find-all (->* [zo (Listof String)] [(U Natural #f)] Void))
 (define (find-all ctx args [lim #f])
@@ -467,6 +468,7 @@
 (: has-any-flags? (-> (Vectorof String) Boolean))
 (define (has-any-flags? v)
   ;; (-> (vectorof string) boolean?)
-  (for/or ([str (in-vector v)])
-    (and (< 0 (string-length str))
-         (eq? #\- (string-ref str 0)))))
+  (for/or ([i (in-range (vector-length v))])
+    (let ([str (vector-ref v i)])
+      (and (< 0 (string-length str))
+           (eq? #\- (string-ref str 0))))))
